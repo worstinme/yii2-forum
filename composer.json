@@ -1,0 +1,28 @@
+{
+	"name": "worstinme/yii2-forum",
+	"description": "forum extension for yii 2",
+	"keywords": ["yii2", "forum"],
+	"type": "yii2-extension",
+	"license": "MIT",
+	"support": {
+		"source": "https://github.com/worstinme/yii2-forum"
+	},
+	"authors": [
+        {
+            "name": "Evgeny Zakirov",
+            "homepage" : "https://github.com/worstinme"
+        }
+	],
+	"require": {
+        "yiisoft/yii2": ">=2.0.6",
+        "yiisoft/yii2-imagine": "~2.0.0",
+        "worstinme/yii2-uikit": "*",
+        "mihaildev/yii2-elfinder" : "*",
+        "mihaildev/yii2-ckeditor" : "*"
+    },
+	"autoload": {
+		"psr-4": {
+            "worstinme\\forum\\": ""
+        }
+	}
+}
