@@ -9,6 +9,8 @@ use Yii;
 class Module extends \yii\base\Module
 {
     public $languages = ['en'=>'English'];
+    public $postPageSize = 5;
+    public $profileModel = '\app\models\Profile';
     /**
      * @inheritdoc
      */

@@ -48,6 +48,7 @@ class m160711_175421_create_tables extends Migration
             'content' => $this->text(),
             'flag' => $this->smallInteger()->defaultValue(0), 
             'state' => $this->smallInteger()->defaultValue(0), 
+            'views' => $this->smallInteger()->defaultValue(0), 
             'created_at' => $this->integer(),
             'updated_at' => $this->integer(),
             'user_id' => $this->integer()->notNull(),

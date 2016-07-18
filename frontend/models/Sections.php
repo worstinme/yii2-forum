@@ -58,6 +58,10 @@ class Sections extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getUrl() {
+        return ['/forum/default/section','section'=>$this->alias,'lang'=>$this->lang];
+    }
+
     public function getForums()
     {
         return $this->hasMany(Forums::className(), ['section_id' => 'id'])->where(['state'=>1])->inverseOf('section');

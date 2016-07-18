@@ -57,4 +57,9 @@ class Threads extends \yii\db\ActiveRecord
             'user_id' => Yii::t('forum', 'User ID'),
         ];
     }
+
+    public function getForum()
+    {
+        return $this->hasOne(Forums::className(), ['id' => 'forum_id'])->inverseOf('threads');
+    }
 }

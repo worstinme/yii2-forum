@@ -18,17 +18,23 @@ $this->params['breadcrumbs'][] = $this->title;
 		<div class="forum-section-forums uk-accordion-content uk-active">
 			<?php foreach ($section->forums as $forum): ?>
 			<div class="forum">
-				<div class="uk-grid item uk-grid-small" data-uk-grid-margin>
+				<div class="uk-grid item uk-grid-small uk-grid-match" data-uk-grid-margin>
                     <div class="uk-width-1-1 uk-width-medium-3-5">
-                        <h3><?= Html::a($forum->name, $forum->url); ?></h3>
-                        <p><?=$forum->description?></p>
+                        <div class="uk-panel">
+                        	<h3><?= Html::a($forum->name, $forum->url); ?></h3>
+                        	<p><?=$forum->description?></p>
+                        </div>
                     </div>
                     <div class="uk-width-1-1 uk-width-medium-2-5">
-                        <ul class="uk-list">
-                            <li><a>...</a></li>
-                            <li><a>...</a></li>
-                            <li><a>...</a></li>
-                        </ul>
+                    	<div class="uk-panel uk-flex uk-flex-middle">
+	                    	<ul class="last-threads">
+	                    	<?php foreach ($forum->lastThreads as $thread): ?>
+								<li>
+									<?= Html::a($thread->name, $thread->url); ?>
+								</li>
+	                        <?php endforeach ?>
+	                        </ul>
+                        </div>
                     </div>
                 </div>
 			</div>

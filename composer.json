@@ -17,8 +17,7 @@
         "yiisoft/yii2": ">=2.0.6",
         "yiisoft/yii2-imagine": "~2.0.0",
         "worstinme/yii2-uikit": "*",
-        "mihaildev/yii2-elfinder" : "*",
-        "mihaildev/yii2-ckeditor" : "*"
+        "worstinme/yii2-jodit" : "*"
     },
 	"autoload": {
 		"psr-4": {

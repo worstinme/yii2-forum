@@ -4,21 +4,18 @@ namespace worstinme\forum\frontend\models;
 
 use Yii;
 
-/**
- * This is the model class for table "forum_threads".
- *
- * @property integer $id
- * @property integer $forum_id
- * @property string $name
- * @property string $content
- * @property integer $flag
- * @property integer $state
- * @property integer $created_at
- * @property integer $updated_at
- * @property integer $user_id
- */
 class Threads extends \yii\db\ActiveRecord
 {
+    const STATE_DELETED = 0;
+    const STATE_WAIT = 10;
+    const STATE_REJECTED = 11;
+    const STATE_ACTIVE = 1;
+
+    const DELAY_TO_EDIT = 60*60;
+    const DELAY_TO_DELETE = 60*5;
+
+    public $_forum;
+
     /**
      * @inheritdoc
      */
@@ -33,9 +30,10 @@ class Threads extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['forum_id', 'name', 'user_id'], 'required'],
-            [['forum_id', 'flag', 'state', 'created_at', 'updated_at', 'user_id'], 'integer'],
+            [['name','content'], 'required'],
             [['content'], 'string'],
+            [['views'],'integer'],
+            [['content'],'filter','filter'=>'\worstinme\forum\helpers\HtmlPurifier::filter'],
             [['name'], 'string', 'max' => 255],
         ];
     }
@@ -56,5 +54,92 @@ class Threads extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('forum', 'Updated At'),
             'user_id' => Yii::t('forum', 'User ID'),
         ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            \yii\behaviors\TimestampBehavior::className(),
+        ];
+    }
+
+    public function beforeSave($insert) {
+        if (parent::beforeSave($insert)) {
+
+            if ($insert) {
+                $this->user_id = Yii::$app->user->identity->id;
+                $this->state = $this::STATE_ACTIVE;
+            }
+            
+            return true;
+        }
+        else return false;
+    }
+
+    public function getForum()
+    {
+        return $this->hasOne(Forums::className(), ['id' => 'forum_id'])->inverseOf('threads');
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(Yii::$app->controller->module->profileModel::className(), ['id' => 'user_id']);
+    }
+
+    public function getPosts()
+    {
+        return $this->hasMany(Posts::className(), ['thread_id' => 'id'])->where(['state'=>Posts::STATE_ACTIVE])->orderBy('created_at')->inverseOf('thread');
+    }
+
+    public function getLastPost()
+    {
+        return $this->hasOne(Posts::className(), ['thread_id' => 'id'])->where(['state'=>Posts::STATE_ACTIVE])->orderBy('created_at DESC')->inverseOf('thread');
+    }
+
+    public function getCanEdit() {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+        elseif (Yii::$app->user->can('admin')) {
+            return true;
+        }
+        elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_EDIT) >= time()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getCanDelete() {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+        elseif (Yii::$app->user->can('admin')) {
+            return true;
+        }
+        elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_DELETE) >= time()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getLastPage($perPage) {
+        $perPage = $perPage??Yii::$app->controller->module->postPageSize;
+        return ceil($this->getPosts()->count() / $perPage) - 1;
+    }
+
+    public function getUrl($url = []) {
+        return array_merge(['/forum/threads/view','thread_id'=>$this->id,'forum'=>$this->forum->alias,'section'=>$this->forum->section->alias,'lang'=>$this->forum->lang],$url);
+    }
+
+    public function getEditUrl() {
+        return ['/forum/threads/edit','thread_id'=>$this->id,'forum'=>$this->forum->alias,'section'=>$this->forum->section->alias,'lang'=>$this->forum->lang];
+    }
+
+    public function getDeleteUrl() {
+        return ['delete','thread_id'=>$this->id];
+    }
+
+    public function getReplyUrl() {
+        return ['/forum/threads/reply','thread_id'=>$this->id,'forum'=>$this->forum->alias,'section'=>$this->forum->section->alias,'lang'=>$this->forum->lang];
     }
 }

@@ -18,6 +18,11 @@ use Yii;
  */
 class Posts extends \yii\db\ActiveRecord
 {
+    const STATE_ACTIVE = 1;
+    const STATE_HIDDEN = 0;
+
+    const DELAY_TO_EDIT = 60*5;
+
     /**
      * @inheritdoc
      */
@@ -32,7 +37,7 @@ class Posts extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['thread_id', 'name', 'user_id'], 'required'],
+            [['content'], 'required'],
             [['thread_id', 'state', 'created_at', 'updated_at', 'user_id'], 'integer'],
             [['content'], 'string'],
             [['name'], 'string', 'max' => 255],
@@ -54,5 +59,70 @@ class Posts extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('forum', 'Updated At'),
             'user_id' => Yii::t('forum', 'User ID'),
         ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            \yii\behaviors\TimestampBehavior::className(),
+        ];
+    }
+
+    public function getUser()
+    {
+        $profile = Yii::$app->controller->module->profileModel;
+        return $this->hasOne($profile::className(), ['id' => 'user_id']);
+    }
+
+    public function getThread()
+    {
+        return $this->hasOne(Threads::className(), ['id' => 'thread_id'])->inverseOf('posts');
+    }
+
+    public function beforeSave($insert) {
+        if (parent::beforeSave($insert)) {
+
+            if ($insert) {
+                $this->user_id = Yii::$app->user->identity->id;
+                $this->state = $this::STATE_ACTIVE;
+            }
+            
+            return true;
+        }
+        else return false;
+    }
+
+    public function getCanEdit() {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+        elseif (Yii::$app->user->can('admin')) {
+            return true;
+        }
+        elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_EDIT) >= time()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getCanDelete() {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+        elseif (Yii::$app->user->can('admin')) {
+            return true;
+        }
+        elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_DELETE) >= time()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getEditUrl() {
+        return ['/forum/threads/reply','thread_id'=>$this->thread->id,'lang'=>$this->thread->forum->lang,'post_id'=>$this->id];
+    }
+
+    public function getDeleteUrl() {
+        return ['post-delete','post_id'=>$this->id];
     }
 }
