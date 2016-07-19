@@ -14,7 +14,7 @@ use worstinme\uikit\Nav;
 		['label'=>$model->user->name,'url'=>$model->user->url,'linkOptions'=>['class'=>'author','data'=>['pjax'=>0]]],
 		['label'=>Yii::$app->formatter->asRelativeTime($model->created_at)],
 	    ['label' =>Yii::t('forum','Edit post'),'url' => $model->editUrl,'visible'=>$model->canEdit,'linkOptions'=>['data'=>['pjax'=>0]]],
-	    ['label' =>Yii::t('forum','Delete post'),'url' => $model->deleteUrl,'visible'=>$model->canDelete,'linkOptions'=>['encode'=>false,'data'=>['pjax'=>0,'method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]]],
+	    ['label' =>Yii::t('forum','Delete post'),'url' => $model->deleteUrl,'visible'=>$model->canDelete,'linkOptions'=>['encode'=>false,'data'=>['method'=>'post','confirm'=>Yii::t('forum','Sure,	 delete post?')]]],
 	],
 ]); ?> 
 

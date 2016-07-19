@@ -212,9 +212,11 @@ class ThreadsController extends Controller
 
         if ($model->canDelete) {
 
+            $thread = $model->thread;
+            
             $model->delete();
             Yii::$app->session->setFlash('success', Yii::t('forum',"Post has just been removed."));
-            return $this->redirect($model->url);
+            return $this->redirect($thread->url);
 
         } 
 

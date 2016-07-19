@@ -27,11 +27,11 @@ $postCount = $model->getPosts()->count();
 		</div>
 		<div class="uk-width-medium-1-6">
 			<?php if ($model->lastPost !== null): ?>
-				<?= Html::a($model->lastPost->user->name,$model->lastPost->user->url); ?><br>
+				<?= Html::a($model->lastPost->user->name,$model->lastPost->user->url,['data'=>['pjax'=>0]]); ?><br>
 				<?=Yii::$app->formatter->asRelativeTime($model->lastPost->created_at)?>
-				<?= Html::a(null, $model->getUrl(['#'=>'post-'.$model->lastPost->id]),['class'=>'uk-icon-angle-double-right']); ?>
+				<?= Html::a(null, $model->getUrl(['#'=>'post-'.$model->lastPost->id]),['class'=>'uk-icon-angle-double-right','data'=>['pjax'=>0]]); ?>
 			<?php else: ?>
-				<?= Html::a(' '.Yii::t('forum','Reply'), $model->getUrl(['#'=>'reply']),['class'=>'uk-icon-angle-double-right']); ?>
+				<?= Html::a(' '.Yii::t('forum','Reply'), $model->getUrl(['#'=>'reply']),['class'=>'uk-icon-angle-double-right','data'=>['pjax'=>0]]); ?>
 			<?php endif ?>
 		</div>
 	</div>
