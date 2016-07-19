@@ -14,34 +14,47 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<div class="thread-form">
+<section class="forum">
 
-    <?php $form = ActiveForm::begin(['layout'=>'stacked','field_width'=>'large']); ?>
+    <div class="thread-form">
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        <?php $form = ActiveForm::begin(['layout'=>'stacked','field_width'=>'large']); ?>
 
-    <?=$form->field($model, 'content')->widget(\worstinme\jodit\Editor::className(), [
-        'settings' => [
-            'filebrowser'=>[
-                'ajax'=>[
+        <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+
+        <?=$form->field($model, 'content')->widget(\worstinme\jodit\Editor::className(), [
+            'settings' => [
+                'height'=>'250px',
+                'enableDragAndDropFileToEditor'=>true,
+                'uploader'=>[
                     'url'=>\yii\helpers\Url::to(['/site/upload-image','lang'=>Yii::$app->language]),
-                    'data'=> [
-                        '_csrf'=> Yii::$app->request->csrfToken,
-                    ],
-                ]
-            ],
-        ],
-    ]);?>
+                ],
+                'filebrowser'=>[
+                    'ajax'=>[
+                        'url'=>\yii\helpers\Url::to(['/site/file-browser','lang'=>Yii::$app->language]),
+                        'data'=> [
+                            '_csrf'=> Yii::$app->request->csrfToken,
+                        ],
+                    ]
+                ],
+                'buttons'=>[
+                    'bold', 'italic', 'underline', '|', 'ul', 'ol', '|', 'image', '|', 'hr',
+                ],
 
-    <div class="uk-form-row">
-        <div class="uk-form-controls">
-            <?= Html::submitButton($model->isNewRecord ? Yii::t('forum', 'Create') : Yii::t('forum', 'Update'), ['class' => $model->isNewRecord ? 'uk-button uk-button-success' : 'uk-button uk-button-primary']) ?>
+            ],
+        ]);?>
+
+        <div class="uk-form-row">
+            <div class="uk-form-controls">
+                <?= Html::submitButton($model->isNewRecord ? Yii::t('forum', 'Create') : Yii::t('forum', 'Update'), ['class' => $model->isNewRecord ? 'uk-button uk-button-success' : 'uk-button uk-button-primary']) ?>
+            </div>
         </div>
+
+        <?php ActiveForm::end(); ?>
+
     </div>
 
-    <?php ActiveForm::end(); ?>
-
-</div>
+</section>
 
 
 <?php  $script = <<<JS

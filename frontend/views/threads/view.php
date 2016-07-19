@@ -14,68 +14,70 @@ $this->params['breadcrumbs'][] = ['label'=>$forum->name, 'url'=> $forum->url];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
+<section class="forum">
 
-<article class="thread thread-view forum-panel">
+	<article class="thread thread-view forum-panel">
 
-	<div class="uk-grid uk-grid-small">
-		<div class="uk-width-4-5">
-			<h1><?=$this->title?></h1>
-			<?=$thread->content?>
-		</div>
-		<div class="uk-width-1-5">
+		<h1><?=$this->title?></h1>
+		<?=$thread->content?>
+
+		<div class="thread-info">
 			<div class="author-avatar">
 				<?=!empty($thread->user->avatar) ? Html::img($thread->user->avatar,['class'=>'small-avatar']) : Html::tag('i','',['class'=>'uk-icon-user small-avatar'])?>
 			</div>
-			<div class="author-name">
-				<?= Html::a($thread->user->name, $thread->user->url, ['data'=>['pjax'=>0]]); ?>
+			<div class="thread-description">
+				<?=Yii::t('forum','Author')?> <?= Html::a($thread->user->name, $thread->user->url, ['data'=>['pjax'=>0]]); ?>,
+				<?=Yii::t('forum','Published')?> <?= Yii::$app->formatter->asRelativeTime($thread->created_at) ?>
+			
+				<?= Nav::widget([
+					'options'=>['class'=>'uk-subnav-line'],
+					'navClass'=>'uk-subnav',
+					'items' => [ 
+						['label' =>Yii::t('forum','Reply'),'url' => '#reply','linkOptions'=>['data-uk-smooth-scroll'=>""]],
+					    ['label' =>Yii::t('forum','Edit thread'),'url' => $thread->editUrl,'visible'=>$thread->canEdit,'linkOptions'=>['data'=>['pjax'=>0]]],
+					    ['label' =>Yii::t('forum','Delete thread'),'url' => $thread->deleteUrl,'visible'=>$thread->canDelete,'linkOptions'=>['encode'=>false,'data'=>['pjax'=>0,'method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]]],
+					    ['label' =>Yii::t('forum',$thread->flag?'Unlock thread':'Lock thread'),'url' => $thread->lockUrl,'visible'=>$thread->canEdit,'linkOptions'=>['data'=>['pjax'=>0]]],
+					],
+				]); ?>
 			</div>
 		</div>
-	</div>
 
-	<?= Nav::widget([
-		'options'=>['class'=>'uk-subnav-line thread-info uk-margin-top'],
-		'navClass'=>'uk-subnav',
-		'items' => [ 
-			['label'=>Yii::$app->formatter->asRelativeTime($thread->created_at)],
-		    ['label' =>Yii::t('forum','Edit thread'),'url' => $thread->editUrl,'visible'=>$thread->canEdit,'linkOptions'=>['data'=>['pjax'=>0]]],
-		    ['label' =>Yii::t('forum','Delete thread'),'url' => $thread->deleteUrl,'visible'=>$thread->canDelete,'linkOptions'=>['encode'=>false,'data'=>['pjax'=>0,'method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]]],
-		],
-	]); ?> 
-
-</article>
+	</article>
 
 
-<?php Pjax::begin(['id'=>'posts','timeout'=>5000,'options'=>['class'=>'uk-margin-top','data-uk-observe'=>true]]); ?>    
-	<?= ListView::widget([
-        'dataProvider' => $postProvider,
-        'options'=>['class'=>'thread-posts uk-margin-top'],
-        'itemOptions' => ['class' => 'thread-post forum-panel'],
-        'summaryOptions'=>['class'=>'uk-margin-top'],
-        'layout'=>'{pager}{items}{summary}{pager}',
-        'itemView' => '_post',
-        'pager'=>[
-        	'class'=> 'worstinme\uikit\widgets\LinkPager',
-        	'options'=>['class'=>'uk-pagination']
-        ],
-    ]) ?>
-<?php Pjax::end(); ?>
-
-<hr>
-
-<?php if ($thread->state == $thread::STATE_ACTIVE): ?>
-	
-	<?php if (Yii::$app->user->isGuest): ?>
-		<?= Html::a(Yii::t('forum','Reply to the thread'), $thread->replyUrl); ?>
-	<?php else: ?>
-	<?php Pjax::begin(['id'=>'reply','timeout'=>5000,'options'=>['data-uk-observe'=>true]]); ?> 
-		<?=$this->render('_reply',[
-			'model'=>$post,
-			'thread'=>$thread,
-		]); ?>
+	<?php Pjax::begin(['id'=>'posts','timeout'=>5000,'options'=>['class'=>'uk-margin-top','data-uk-observe'=>true]]); ?>    
+		<?= ListView::widget([
+	        'dataProvider' => $postProvider,
+	        'options'=>['class'=>'thread-posts uk-margin-top'],
+	        'itemOptions' => ['class' => 'thread-post forum-panel'],
+	        'summaryOptions'=>['class'=>'uk-margin-top'],
+	        'layout'=>'{pager}{items}{summary}{pager}',
+	        'itemView' => '_post',
+	        'pager'=>[
+	        	'class'=> 'worstinme\uikit\widgets\LinkPager',
+	        	'options'=>['class'=>'uk-pagination']
+	        ],
+	    ]) ?>
 	<?php Pjax::end(); ?>
+
+	<hr>
+
+	<?php if ($thread->isReplyEnabled): ?>
+		
+		<?php if (Yii::$app->user->isGuest): ?>
+			<?= Html::a(Yii::t('forum','Sign up to reply the thread'), Yii::$app->user->loginUrl); ?>
+		<?php else: ?>
+		<?php Pjax::begin(['id'=>'reply','timeout'=>5000,'options'=>['data-uk-observe'=>true]]); ?> 
+			<?=$this->render('_reply',[
+				'model'=>$post,
+				'thread'=>$thread,
+			]); ?>
+		<?php Pjax::end(); ?>
+		<?php endif ?>
+
 	<?php endif ?>
 
-<?php endif ?>
+</section>
 
 <?php  $script = <<<JS
 

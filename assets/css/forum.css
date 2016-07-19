@@ -1,0 +1,114 @@
+.thread-view hr {
+	display: none;
+}
+.forum-sections .uk-accordion-title  {
+	background: #fff;
+	box-shadow: 0 0 1px rgba(0,0,0,0.2);
+}
+.forum-sections .forum-section-forums {
+
+}
+.forum-panel {
+	background: #fff;
+	padding:15px;
+	box-shadow: 0 0 1px rgba(0,0,0,0.2);
+}
+.forum-view h1 {
+	font-size: 16px;
+	line-height: 20px;
+	margin-bottom:10px;
+	font-weight: bold;
+}
+.forum-threads .thread h2 {
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 20px;
+	margin:0;
+}
+.forum-threads .thread i {
+	vertical-align: middle;
+}
+.forum-threads .thread i.uk-icon-star {
+	color:#D05;
+	vertical-align: baseline;
+}
+.forum-threads .thread .deleted h2 a {
+	color:red;
+}
+.forum-threads-box {
+	box-shadow: 0 0 1px rgba(0,0,0,0.2);
+	background: #fff;
+}
+.forum-threads .thread+.thread {
+	border-top:1px solid rgba(0,0,0,0.2)
+}
+.forum-threads .thread .meta {
+	font-size: 12px;
+	margin:0;
+}
+.forum-threads .thread-panel {
+	padding:7px 15px;
+}
+.forum-threads .thread-panel:hover {
+	background: #F5F5F5;
+}
+.post-content > *:last-child {
+	margin-bottom: 0;
+}
+.post-header {
+	margin:-15px -15px 10px -15px;
+	padding:7px 15px 7px  7px;
+	background: #F5F5F5;
+}
+.post-header li {
+	margin-top: 0;
+	font-size: 13px;
+	line-height: 15px;
+}
+.thread-info {
+	margin:0 -15px -15px -15px;
+	padding:10px 15px;
+	background: #F5F5F5;
+}
+.thread-info .author-avatar {
+	width:40px;
+	height: 40px;
+	margin-right: 15px;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 35px;
+	line-height: 40px;
+	color: #ccc;
+	float: left;
+}
+.thread-info .uk-subnav-line {
+	margin:0;
+	font-size: 12px;
+}
+.thread-info .uk-subnav-line li {
+	margin-top: 0;
+}
+.thread-info .uk-subnav-line li:first-child {
+	padding-left: 0;
+}
+.forum-section-forums .forum h3 {
+	margin:0;
+}
+.forum-section-forums .forum p {
+	margin:0;
+}
+.thread-post a.author {
+	font-weight: bold;
+	color:#000;
+	text-decoration: none;
+}
+.thread-post a.author:hover {
+	text-decoration: underline;
+}
+.thread-reply .redactor-box {
+	margin-bottom: 10px;
+}
+.forum .uk-pagination a {
+	background: #fff;
+	box-shadow: 0 0 1px rgba(0,0,0,.2);
+}

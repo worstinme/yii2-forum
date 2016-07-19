@@ -11,6 +11,9 @@ class Threads extends \yii\db\ActiveRecord
     const STATE_REJECTED = 11;
     const STATE_ACTIVE = 1;
 
+    const FLAG_ACTIVE = 1;
+    const FLAG_INACTIVE = 0;
+
     const DELAY_TO_EDIT = 60*60;
     const DELAY_TO_DELETE = 60*5;
 
@@ -32,7 +35,7 @@ class Threads extends \yii\db\ActiveRecord
         return [
             [['name','content'], 'required'],
             [['content'], 'string'],
-            [['views'],'integer'],
+            [['views','flag','posted_at'],'integer'],
             [['content'],'filter','filter'=>'\worstinme\forum\helpers\HtmlPurifier::filter'],
             [['name'], 'string', 'max' => 255],
         ];
@@ -46,8 +49,8 @@ class Threads extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('forum', 'ID'),
             'forum_id' => Yii::t('forum', 'Forum ID'),
-            'name' => Yii::t('forum', 'Name'),
-            'content' => Yii::t('forum', 'Content'),
+            'name' => Yii::t('forum', 'Thread title'),
+            'content' => Yii::t('forum', 'Thread content'),
             'flag' => Yii::t('forum', 'Flag'),
             'state' => Yii::t('forum', 'State'),
             'created_at' => Yii::t('forum', 'Created At'),
@@ -100,10 +103,10 @@ class Threads extends \yii\db\ActiveRecord
         if (Yii::$app->user->isGuest) {
             return false;
         }
-        elseif (Yii::$app->user->can('admin')) {
+        elseif (Yii::$app->user->can(Yii::$app->controller->module->moderRole)) {
             return true;
         }
-        elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_EDIT) >= time()) {
+        elseif($this->state != $this::STATE_DELETED && Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_EDIT) >= time()) {
             return true;
         }
         return false;
@@ -113,10 +116,20 @@ class Threads extends \yii\db\ActiveRecord
         if (Yii::$app->user->isGuest) {
             return false;
         }
-        elseif (Yii::$app->user->can('admin')) {
+        elseif (Yii::$app->user->can(Yii::$app->controller->module->moderRole)) {
             return true;
         }
-        elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_DELETE) >= time()) {
+        elseif($this->state != $this::STATE_DELETED && Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_DELETE) >= time()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getIsReplyEnabled() {
+        if (Yii::$app->user->can(Yii::$app->controller->module->moderRole)) {
+            return true;
+        }
+        elseif($this->state == $this::STATE_ACTIVE) {
             return true;
         }
         return false;
@@ -137,6 +150,10 @@ class Threads extends \yii\db\ActiveRecord
 
     public function getDeleteUrl() {
         return ['delete','thread_id'=>$this->id];
+    }
+
+    public function getLockUrl() {
+        return ['lock','thread_id'=>$this->id];
     }
 
     public function getReplyUrl() {

@@ -11,6 +11,7 @@ class Module extends \yii\base\Module
     public $languages = ['en'=>'English'];
     public $postPageSize = 5;
     public $profileModel = '\app\models\Profile';
+    public $moderRole = 'admin';
     /**
      * @inheritdoc
      */
@@ -30,7 +31,6 @@ class Module extends \yii\base\Module
     {
         Yii::$app->i18n->translations['forum'] = [
             'class' => 'yii\i18n\PhpMessageSource',
-            'sourceLanguage' => 'ru-RU',
             'basePath' => '@worstinme/forum/messages',
         ];
     }

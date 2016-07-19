@@ -44,10 +44,14 @@ class ThreadsSearch extends Threads
     {
         $query = $this->_query??Threads::find()->with(['forum','forum.section','lastPost']);
 
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can(Yii::$app->controller->module->moderRole)) {
+            $query->where(['forum_threads.state'=>Threads::STATE_ACTIVE]);
+        }
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $query->orderBy('flag DESC, posted_at DESC, updated_at DESC'),
         ]);
 
         $this->load($params);

@@ -66,12 +66,8 @@ class Forums extends \yii\db\ActiveRecord
     }
 
     public function getThreads()
-    {
-        if (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
-            return $this->hasMany(Threads::className(), ['forum_id' => 'id'])->inverseOf('forum');
-        }
-        
-        return $this->hasMany(Threads::className(), ['forum_id' => 'id'])->where(['forum_threads.state'=>Threads::STATE_ACTIVE])->inverseOf('forum');
+    {        
+        return $this->hasMany(Threads::className(), ['forum_id' => 'id'])->inverseOf('forum');
     }
 
     public function getLastThreads()

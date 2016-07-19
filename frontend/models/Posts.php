@@ -96,7 +96,7 @@ class Posts extends \yii\db\ActiveRecord
         if (Yii::$app->user->isGuest) {
             return false;
         }
-        elseif (Yii::$app->user->can('admin')) {
+        elseif (Yii::$app->controller->module->moderRole) {
             return true;
         }
         elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_EDIT) >= time()) {
@@ -109,7 +109,7 @@ class Posts extends \yii\db\ActiveRecord
         if (Yii::$app->user->isGuest) {
             return false;
         }
-        elseif (Yii::$app->user->can('admin')) {
+        elseif (Yii::$app->controller->module->moderRole) {
             return true;
         }
         elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_DELETE) >= time()) {

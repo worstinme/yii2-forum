@@ -10,15 +10,32 @@ use worstinme\uikit\ActiveForm;
 <div class="thread-reply">
     <?php $form = ActiveForm::begin(['layout'=>'stacked','field_width'=>'large','options'=>['data'=>['pjax'=>true]]]); ?>
 
-    <?=$form->field($model, 'content')->widget(\vova07\imperavi\Widget::className(), [
+    <?=$form->field($model, 'content')->widget(\worstinme\jodit\Editor::className(), [
         'settings' => [
-            'lang' => Yii::$app->language,
-            'minHeight' => 100,
-            'buttons'=>['bold', 'italic', 'underline', 'deleted', '|','lists', 'image'],
-        ]
-    ])->label(false)?>
+            'height'=>'120px',
+            'enableDragAndDropFileToEditor'=>true,
+            'uploader'=>[
+                'url'=>\yii\helpers\Url::to(['/site/upload-image','lang'=>Yii::$app->language]),
+            ],
+            'filebrowser'=>[
+                'ajax'=>[
+                    'url'=>\yii\helpers\Url::to(['/site/file-browser','lang'=>Yii::$app->language]),
+                    'data'=> [
+                        '_csrf'=> Yii::$app->request->csrfToken,
+                    ],
+                ]
+            ],
+            'buttons'=>[
+                'bold', 'italic', 'underline', '|', 'ul', 'ol', '|', 'image',
+            ],
 
-    <?= Html::submitButton(Yii::t('forum', 'REPLY_TO_THREAD'), ['class' => 'uk-button uk-button-success']) ?>
+        ],
+        'options'=>['placeholder'=>Yii::t('forum','Type your message here')],
+    ])->label(false);?>
+
+    <div class="uk-form-row">
+        <?= Html::submitButton(Yii::t('forum', 'Send message'), ['class' => 'uk-button uk-button-success']) ?>
+    </div>
 
     <?php ActiveForm::end(); ?>
 </div>

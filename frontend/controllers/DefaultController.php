@@ -27,7 +27,17 @@ class DefaultController extends Controller
             Yii::$app->language = $lang;
         }
 
+        if (in_array($action->id, ['index','forum'])) {
+            \yii\helpers\Url::remember();
+        }
+
         return true; 
+    }
+
+    public function render($view, $params = [])
+    {
+        \worstinme\forum\assets\Asset::register($this->view);
+        return parent::render($view, $params);
     }
 
     /**
