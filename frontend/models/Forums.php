@@ -4,20 +4,6 @@ namespace worstinme\forum\frontend\models;
 
 use Yii;
 
-/**
- * This is the model class for table "forum_forums".
- *
- * @property integer $id
- * @property integer $section_id
- * @property string $name
- * @property string $alias
- * @property string $description
- * @property integer $state
- * @property integer $sort
- * @property string $metaTitle
- * @property string $metaDescription
- * @property string $metaKeywords
- */
 class Forums extends \yii\db\ActiveRecord
 {
     /**

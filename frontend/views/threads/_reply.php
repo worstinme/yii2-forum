@@ -15,15 +15,10 @@ use worstinme\uikit\ActiveForm;
             'height'=>'120px',
             'enableDragAndDropFileToEditor'=>true,
             'uploader'=>[
-                'url'=>\yii\helpers\Url::to(['/site/upload-image','lang'=>Yii::$app->language]),
-            ],
-            'filebrowser'=>[
-                'ajax'=>[
-                    'url'=>\yii\helpers\Url::to(['/site/file-browser','lang'=>Yii::$app->language]),
-                    'data'=> [
-                        '_csrf'=> Yii::$app->request->csrfToken,
-                    ],
-                ]
+                'url'=>\yii\helpers\Url::to(['upload-image','lang'=>Yii::$app->language]),
+                'data'=> [
+                    '_csrf'=> Yii::$app->request->csrfToken,
+                ],
             ],
             'buttons'=>[
                 'bold', 'italic', 'underline', '|', 'ul', 'ol', '|', 'image',

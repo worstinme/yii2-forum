@@ -40,14 +40,25 @@ class ThreadsController extends Controller
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only'=>['edit','delete','post-delete','lock'],
+                'only'=>['edit','delete','post-delete','lock','upload-image'],
                 'rules' => [
                     [
-                        'actions' => ['edit','delete','post-delete','lock'],
+                        'actions' => ['edit','delete','post-delete','lock','upload-image'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
+            ],
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'upload-image' => [
+                'class' => 'worstinme\forum\helpers\UploadAction',
+                'folder'=>Yii::getAlias('@webroot/uploads/forum/tmp'),
+                'webroot'=>Yii::getAlias('@webroot'),
             ],
         ];
     }
@@ -118,7 +129,7 @@ class ThreadsController extends Controller
                     }
 
                     if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->save()) {
-                        return $this->redirect($model->url);
+                       // return $this->redirect($model->url);
                     }
 
                     return $this->render('edit',[
@@ -216,6 +227,8 @@ class ThreadsController extends Controller
             
             $model->delete();
             Yii::$app->session->setFlash('success', Yii::t('forum',"Post has just been removed."));
+
+           // print_r(Yii::$app->session->get('check'));
             return $this->redirect($thread->url);
 
         } 

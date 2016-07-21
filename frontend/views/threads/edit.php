@@ -25,18 +25,34 @@ $this->params['breadcrumbs'][] = $this->title;
         <?=$form->field($model, 'content')->widget(\worstinme\jodit\Editor::className(), [
             'settings' => [
                 'height'=>'250px',
-                'enableDragAndDropFileToEditor'=>true,
+                'enableDragAndDropFileToEditor'=>new \yii\web\JsExpression("true"),
                 'uploader'=>[
-                    'url'=>\yii\helpers\Url::to(['/site/upload-image','lang'=>Yii::$app->language]),
+                    'url'=>\yii\helpers\Url::to(['upload-image','lang'=>Yii::$app->language]),
+                    'data'=> [
+                        '_csrf'=> Yii::$app->request->csrfToken,
+                    ],
                 ],
-                'filebrowser'=>[
+               'filebrowser'=>[
                     'ajax'=>[
                         'url'=>\yii\helpers\Url::to(['/site/file-browser','lang'=>Yii::$app->language]),
                         'data'=> [
                             '_csrf'=> Yii::$app->request->csrfToken,
                         ],
-                    ]
-                ],
+                    ],
+                    'uploader' => [
+                        'url'=>\yii\helpers\Url::to(['/site/upload-image','lang'=>Yii::$app->language]),
+                        'isSuccess'=> new \yii\web\JsExpression("function (resp) {
+                            return !resp.error;
+                        }"),
+                        'prepareData'=> new \yii\web\JsExpression("function (formdata) {
+                            return formdata;
+                        }"),
+                        'data'=> [
+                            '_csrf'=> Yii::$app->request->csrfToken,
+                        ],
+                        'filesVariableName' => 'files',
+                    ],
+                ], 
                 'buttons'=>[
                     'bold', 'italic', 'underline', '|', 'ul', 'ol', '|', 'image', '|', 'hr',
                 ],
