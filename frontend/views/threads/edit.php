@@ -34,27 +34,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                'filebrowser'=>[
                     'ajax'=>[
-                        'url'=>\yii\helpers\Url::to(['/site/file-browser','lang'=>Yii::$app->language]),
+                        'url'=>\yii\helpers\Url::to(['file-browser','lang'=>Yii::$app->language]),
                         'data'=> [
                             '_csrf'=> Yii::$app->request->csrfToken,
                         ],
                     ],
                     'uploader' => [
-                        'url'=>\yii\helpers\Url::to(['/site/upload-image','lang'=>Yii::$app->language]),
-                        'isSuccess'=> new \yii\web\JsExpression("function (resp) {
-                            return !resp.error;
-                        }"),
-                        'prepareData'=> new \yii\web\JsExpression("function (formdata) {
-                            return formdata;
-                        }"),
+                        'url'=>\yii\helpers\Url::to(['upload-image','lang'=>Yii::$app->language]),
                         'data'=> [
                             '_csrf'=> Yii::$app->request->csrfToken,
                         ],
-                        'filesVariableName' => 'files',
                     ],
+                    'createNewFolder'=>false,
+                    'deleteFolder'=>false,
                 ], 
                 'buttons'=>[
-                    'bold', 'italic', 'underline', '|', 'ul', 'ol', '|', 'image', '|', 'hr',
+                    'bold', 'italic', 'underline', '|', 'ul', 'ol', '|', 'image', '|', 'hr', 
                 ],
 
             ],

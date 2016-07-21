@@ -62,16 +62,7 @@ class Threads extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            [
-                'class' => \yii\behaviors\TimestampBehavior::className(),
-            ],
-            [
-                'class' => \worstinme\jodit\ReplaceImagesBehavior::className(),
-                'path' => Yii::getAlias('@webroot/images/forum'),
-                'tempPath'=> Yii::getAlias('@webroot/uploads/forum/tmp'),
-                'attribute'=> 'content',
-                // 'slugAttribute' => 'slug',
-            ],
+            \yii\behaviors\TimestampBehavior::className(),
         ];
 
     }

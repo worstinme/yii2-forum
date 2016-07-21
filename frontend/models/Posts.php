@@ -65,13 +65,6 @@ class Posts extends \yii\db\ActiveRecord
     {
         return [
             \yii\behaviors\TimestampBehavior::className(),
-            [
-                'class' => \worstinme\jodit\ReplaceImagesBehavior::className(),
-                'path' => Yii::getAlias('@webroot/images/forum/posts'),
-                'tempPath'=> Yii::getAlias('@webroot/uploads/forum/tmp'),
-                'attribute'=> 'content',
-                // 'slugAttribute' => 'slug',
-            ],
         ];
     }
 

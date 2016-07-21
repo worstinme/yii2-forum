@@ -40,10 +40,10 @@ class ThreadsController extends Controller
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only'=>['edit','delete','post-delete','lock','upload-image'],
+                'only'=>['edit','delete','post-delete','lock','upload-image','file-browser'],
                 'rules' => [
                     [
-                        'actions' => ['edit','delete','post-delete','lock','upload-image'],
+                        'actions' => ['edit','delete','post-delete','lock','upload-image','file-browser'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -57,7 +57,12 @@ class ThreadsController extends Controller
         return [
             'upload-image' => [
                 'class' => 'worstinme\forum\helpers\UploadAction',
-                'folder'=>Yii::getAlias('@webroot/uploads/forum/tmp'),
+                'folder'=>Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->identity->id),
+                'webroot'=>Yii::getAlias('@webroot'),
+            ],
+            'file-browser' => [
+                'class' => 'worstinme\jodit\BrowserAction',
+                'folder'=>Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->identity->id),
                 'webroot'=>Yii::getAlias('@webroot'),
             ],
         ];
@@ -76,18 +81,30 @@ class ThreadsController extends Controller
                 if (($thread = $forum->getThreads()->where(['id'=>$thread_id])->one()) !== null) {
 
                     if (!Yii::$app->session->has('thread-'.$thread->id.'-view')) {
-                        $thread->views += 1;
-                        $thread->save();
+                        $thread->updateAttributes(['views'=>$thread->views++]);
                         Yii::$app->session->set('thread-'.$thread->id.'-view',true);
                     }
 
                     $post = new Posts(['thread_id'=>$thread->id]);
 
-                    if ($post->load(Yii::$app->request->post()) && $post->save()) {
-                        $thread->updateAttributes(['posted_at'=>$post->created_at]);
-                        Yii::$app->session->setFlash('success',Yii::t('forum','Your message was submitted.'));
-                        $post = new Posts(['thread_id'=>$thread->id]);
+                    if (!Yii::$app->user->isGuest && Yii::$app->request->isPost) {
+
+                        $post->attachBehavior('ReplaceImagesBehavior', [
+                            'class' => \worstinme\jodit\ReplaceImagesBehavior::className(),
+                            'path' => Yii::getAlias('@webroot/images/forum/'.$thread->id),
+                            'tempPath'=> Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->identity->id),
+                            'filename_model_suffix'=>true,
+                            'attribute'=> 'content',
+                        ]);
+
+                        if ($post->load(Yii::$app->request->post()) && $post->save()) {
+                            $thread->updateAttributes(['posted_at'=>$post->created_at]);
+                            Yii::$app->session->setFlash('success',Yii::t('forum','Your message was submitted.'));
+                            $post = new Posts(['thread_id'=>$thread->id]);
+                        }
+
                     }
+
 
                     $perPage = Yii::$app->request->get('per-page',Yii::$app->controller->module->postPageSize);
 
@@ -128,8 +145,21 @@ class ThreadsController extends Controller
                         return $this->redirect($model->url); 
                     }
 
-                    if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->save()) {
-                       // return $this->redirect($model->url);
+                    if (Yii::$app->request->isPost) {
+
+                        $model->attachBehavior('ReplaceImagesBehavior', [
+                            'class' => \worstinme\jodit\ReplaceImagesBehavior::className(),
+                            'path' => Yii::getAlias('@webroot/images/forum'),
+                            'tempPath'=> Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->identity->id),
+                            'subfolder'=>true,
+                            'filename_model_suffix'=>true,
+                            'attribute'=> 'content',
+                        ]);
+
+                        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                           // return $this->redirect($model->url);
+                        }
+
                     }
 
                     return $this->render('edit',[
@@ -158,6 +188,15 @@ class ThreadsController extends Controller
 
                 $forum = $model->forum->alias;
                 $section = $model->forum->section->alias;
+
+                $model->attachBehavior('ReplaceImagesBehavior', [
+                    'class' => \worstinme\jodit\ReplaceImagesBehavior::className(),
+                    'path' => Yii::getAlias('@webroot/images/forum'),
+                    'tempPath'=> Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->identity->id),
+                    'subfolder'=>true,
+                    'filename_model_suffix'=>true,
+                    'attribute'=> 'content',
+                ]);
 
                 $model->delete();
 
@@ -224,13 +263,21 @@ class ThreadsController extends Controller
         if ($model->canDelete) {
 
             $thread = $model->thread;
+
+            $model->attachBehavior('ReplaceImagesBehavior', [
+                'class' => \worstinme\jodit\ReplaceImagesBehavior::className(),
+                'path' => Yii::getAlias('@webroot/images/forum/'.$thread->id),
+                'tempPath'=> Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->identity->id),
+                'filename_model_suffix'=>true,
+                'attribute'=> 'content',
+            ]);
             
             $model->delete();
+
             Yii::$app->session->setFlash('success', Yii::t('forum',"Post has just been removed."));
 
            // print_r(Yii::$app->session->get('check'));
             return $this->redirect($thread->url);
-
         } 
 
         Yii::$app->session->setFlash('error', Yii::t('forum',"Post can't be deleted"));
