@@ -40,7 +40,7 @@ class ThreadsController extends Controller
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only'=>['edit','delete','post-delete','lock','upload-image','file-browser'],
+                'only'=>['edit','delete','reply','post-delete','lock','upload-image','file-browser'],
                 'rules' => [
                     [
                         'actions' => ['edit','delete','post-delete','lock','upload-image','file-browser'],
@@ -157,7 +157,7 @@ class ThreadsController extends Controller
                         ]);
 
                         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                           // return $this->redirect($model->url);
+                            return $this->redirect($model->url);
                         }
 
                     }

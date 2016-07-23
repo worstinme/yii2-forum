@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use worstinme\uikit\Nav;
 
 $this->title = Yii::t('forum','Форум');
 
@@ -17,13 +18,14 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?php foreach ($sections as $section): ?>
 		
 			<h2 class="uk-accordion-title"><?=$section->name?></h2>
+
 			<div class="forum-section-forums uk-accordion-content uk-active">
 				<?php foreach ($section->forums as $forum): ?>
 				<div class="forum">
 					<div class="uk-grid item uk-grid-small uk-grid-match" data-uk-grid-margin>
 	                    <div class="uk-width-1-1 uk-width-medium-3-5">
 	                        <div class="uk-panel">
-	                        	<h3><?= Html::a($forum->name, $forum->url); ?></h3>
+	                        	<h3><?= Html::a($forum->name, $forum->url); ?></h3> 
 	                        	<p><?=$forum->description?></p>
 	                        </div>
 	                    </div>
@@ -41,11 +43,29 @@ $this->params['breadcrumbs'][] = $this->title;
 	                </div>
 				</div>
 				<?php endforeach ?>
+
+				<?php if ($section->canEdit): ?>
+
+					<hr>
+					
+		        	<?= Html::a(Yii::t('app','Редактировать раздел'), ['/forum/default/section-create','lang'=>$lang,'id'=>$section->id]); ?>
+		                        		
+		        <?php endif ?>
+
 			</div>
 
 		<?php endforeach ?>
 
 	</div>
+
+	<?php if ($forum->canEdit): ?>
+    
+        <?= Html::a(Yii::t('forum','Создать раздел'), 
+            ['/forum/default/section-create','lang'=>$lang], 
+            ['class' => 'uk-button uk-button-small uk-button-success']); ?>
+
+    <?php endif ?>
+
 
 </section>
 

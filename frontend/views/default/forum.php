@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use worstinme\uikit\widgets\ListView;
 use yii\widgets\Pjax;
+use worstinme\uikit\Nav;
 
 $this->title = $forum->title;
 
@@ -19,9 +20,31 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?=$this->title?></h1>
 
+    <?php if (!Yii::$app->user->isGuest && (Yii::$app->user->can('moder') || Yii::$app->user->can('admin'))): ?>
+    
+        <?= Nav::widget([
+            'options'=>['class'=>'uk-subnav-line uk-margin-top post-header'],
+            'navClass'=>'uk-subnav',
+            'items' => [ 
+                ['label' =>Yii::t('forum','Редактировать форум'),'url' =>['/forum/default/forum-create','lang'=>$lang,'id'=>$forum->id]],
+                ['label' =>Yii::t('forum','Скрыть форум'),'url' =>['/forum/default/forum-delete','lang'=>$lang,'id'=>$forum->id]],
+            ],
+        ]); ?> 
+
+    <?php endif ?>
+
     <?=$forum->description?>
 
     </article>
+
+    <div class="uk-margin-top">
+
+        <?= Html::a(Yii::t('forum','Создать новую тему'), 
+            ['/forum/threads/new-thread','lang'=>$lang,'forum_id'=>$forum->id], 
+            ['class' => 'uk-button uk-button-small uk-button-success']); ?>
+
+
+    </div>
 
     <?php Pjax::begin(); ?>    
     	
@@ -37,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= Html::a(Yii::t('forum','Создать новую тему'), 
     	['/forum/threads/new-thread','lang'=>$lang,'forum_id'=>$forum->id], 
-    	['class' => 'uk-button uk-button-success']); ?>
+    	['class' => 'uk-button uk-button-small uk-button-success']); ?>
 
 </section>
 

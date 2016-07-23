@@ -68,4 +68,15 @@ class Forums extends \yii\db\ActiveRecord
     public function getTitle() {
         return !empty($this->metaTitle)?$this->metaTitle:$this->name;
     }
+
+    public function getCanEdit() {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+        elseif (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
+            return true;
+        }
+        return false;
+    }
+    
 }

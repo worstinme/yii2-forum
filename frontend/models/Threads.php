@@ -104,7 +104,7 @@ class Threads extends \yii\db\ActiveRecord
         if (Yii::$app->user->isGuest) {
             return false;
         }
-        elseif (Yii::$app->user->can(Yii::$app->controller->module->moderRole)) {
+        elseif (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
             return true;
         }
         elseif($this->state != $this::STATE_DELETED && Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_EDIT) >= time()) {
@@ -117,7 +117,7 @@ class Threads extends \yii\db\ActiveRecord
         if (Yii::$app->user->isGuest) {
             return false;
         }
-        elseif (Yii::$app->user->can(Yii::$app->controller->module->moderRole)) {
+        elseif (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
             return true;
         }
         elseif($this->state != $this::STATE_DELETED && Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_DELETE) >= time()) {
@@ -127,7 +127,7 @@ class Threads extends \yii\db\ActiveRecord
     }
 
     public function getIsReplyEnabled() {
-        if (Yii::$app->user->can(Yii::$app->controller->module->moderRole)) {
+        if (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
             return true;
         }
         elseif($this->state == $this::STATE_ACTIVE) {
@@ -150,11 +150,11 @@ class Threads extends \yii\db\ActiveRecord
     }
 
     public function getDeleteUrl() {
-        return ['delete','thread_id'=>$this->id];
+        return ['/forum/threads/delete','thread_id'=>$this->id,'lang'=>$this->forum->lang];
     }
 
     public function getLockUrl() {
-        return ['lock','thread_id'=>$this->id];
+        return ['/forum/threads/lock','thread_id'=>$this->id,'lang'=>$this->forum->lang];
     }
 
     public function getReplyUrl() {
