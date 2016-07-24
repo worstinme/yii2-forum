@@ -49,6 +49,16 @@ class ThreadsController extends Controller
                     ],
                 ],
             ],
+            'verbs' => [
+                'class' => \yii\filters\VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                    'post-browser' => ['POST'],
+                    'file-delete' => ['POST'],
+                    'upload-image' => ['POST'],
+                    'lock' => ['POST'],
+                ],
+            ],
         ];
     }
 

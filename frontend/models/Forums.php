@@ -6,6 +6,8 @@ use Yii;
 
 class Forums extends \yii\db\ActiveRecord
 {
+    const STATE_ACTIVE = 1;
+    const STATE_HIDDEN = 0;
     /**
      * @inheritdoc
      */
@@ -74,6 +76,16 @@ class Forums extends \yii\db\ActiveRecord
             return false;
         }
         elseif (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getCanDelete() {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+        elseif (Yii::$app->user->can('admin')) {
             return true;
         }
         return false;

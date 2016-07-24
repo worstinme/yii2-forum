@@ -20,13 +20,22 @@ class DefaultController extends Controller
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only'=>['section-create','forum-create'],
+                'only'=>['section-create','forum-create','section-delete','section-activate','forum-delete','forum-activate'],
                 'rules' => [
                     [
-                        'actions' => ['section-create','forum-create'],
+                        'actions' => ['section-create','forum-create','section-delete','section-activate','forum-delete','forum-activate'],
                         'allow' => true,
-                        'roles' => ['admin','moder','section-create','forum-create'],
+                        'roles' => ['admin','moder','section','forum'],
                     ],
+                ],
+            ],
+            'verbs' => [
+                'class' => \yii\filters\VerbFilter::className(),
+                'actions' => [
+                    'section-delete' => ['POST'],
+                    'section-activate' => ['POST'],
+                    'forum-delete' => ['POST'],
+                    'forum-activate' => ['POST'],
                 ],
             ],
         ];
@@ -64,7 +73,13 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $sections = Sections::find()->where(['lang'=>$this->lang,'state'=>1])->all();
+        if (!Yii::$app->user->isGuest && (Yii::$app->user->can('admin') || Yii::$app->user->can('moder'))) {
+            $sections = Sections::find()->where(['lang'=>$this->lang])->all();
+        }
+        else {
+            $sections = Sections::find()->where(['lang'=>$this->lang,'state'=>Sections::STATE_ACTIVE])->all();
+        }
+        
 
         return $this->render('index',[
             'sections'=>$sections,
@@ -110,6 +125,106 @@ class DefaultController extends Controller
                 'lang'=>$this->lang,
             ]);
         }
+    }
+
+    public function actionSectionDelete($id) {
+
+        if (($model = Sections::findOne($id)) === null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        if ($model->state == $model::STATE_HIDDEN && $model->canDelete) {
+
+            $model->delete();
+
+            Yii::$app->session->setFlash('success', Yii::t('forum',"Section has just been removed."));
+
+            return $this->redirect(['/forum/default/index','lang'=>$model->lang]);
+        }
+        elseif ($model->state == $model::STATE_ACTIVE && $model->canEdit) {
+
+            $model->updateAttributes(['state'=>$model::STATE_HIDDEN]);
+            Yii::$app->session->setFlash('success', Yii::t('forum',"Section has been hidden."));
+
+            return $this->redirect(['index','lang'=>$this->lang]);
+
+        }
+
+        Yii::$app->session->setFlash('error', Yii::t('forum',"Mission impossible"));
+        
+        return $this->redirect(['index','lang'=>$this->lang]);
+
+    }
+
+    public function actionSectionActivate($id) {
+
+        if (($model = Sections::findOne($id)) === null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        if ($model->state == $model::STATE_HIDDEN && $model->canEdit) {
+
+            $model->updateAttributes(['state'=>$model::STATE_ACTIVE]);
+            Yii::$app->session->setFlash('success', Yii::t('forum',"Section has been activated."));
+
+            return $this->redirect(['index','lang'=>$this->lang]);
+
+        }
+
+        Yii::$app->session->setFlash('error', Yii::t('forum',"Mission impossible"));
+        
+        return $this->redirect($model->url);
+
+    }
+
+    public function actionForumDelete($id) {
+
+        if (($model = Forums::findOne($id)) === null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        if ($model->state == $model::STATE_HIDDEN && $model->canDelete) {
+
+            $model->delete();
+
+            Yii::$app->session->setFlash('success', Yii::t('forum',"Forum has just been removed."));
+
+            return $this->redirect(['/forum/default/index','lang'=>$model->lang]);
+        }
+        elseif ($model->state == $model::STATE_ACTIVE && $model->canEdit) {
+
+            $model->updateAttributes(['state'=>$model::STATE_HIDDEN]);
+            Yii::$app->session->setFlash('success', Yii::t('forum',"Forum has been hidden."));
+
+            return $this->redirect($model->url);
+
+        }
+
+        Yii::$app->session->setFlash('error', Yii::t('forum',"Mission impossible"));
+        
+        return $this->redirect($model->url);
+
+    }
+
+    public function actionForumActivate($id) {
+
+        if (($model = Forums::findOne($id)) === null) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        if ($model->state == $model::STATE_HIDDEN && $model->canEdit) {
+
+            $model->updateAttributes(['state'=>$model::STATE_ACTIVE]);
+            Yii::$app->session->setFlash('success', Yii::t('forum',"Forum has been activated."));
+
+            return $this->redirect($model->url);
+
+        }
+
+        Yii::$app->session->setFlash('error', Yii::t('forum',"Mission impossible"));
+        
+        return $this->redirect($model->url);
+
     }
 
 

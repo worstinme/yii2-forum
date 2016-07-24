@@ -6,6 +6,9 @@ use Yii;
 
 class Sections extends \yii\db\ActiveRecord
 {
+    const STATE_ACTIVE = 1;
+    const STATE_HIDDEN = 0;
+
     /**
      * @inheritdoc
      */
@@ -51,7 +54,10 @@ class Sections extends \yii\db\ActiveRecord
 
     public function getForums()
     {
-        return $this->hasMany(Forums::className(), ['section_id' => 'id'])->where(['state'=>1])->inverseOf('section');
+        if (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
+            return $this->hasMany(Forums::className(), ['section_id' => 'id'])->inverseOf('section');
+        }
+        return $this->hasMany(Forums::className(), ['section_id' => 'id'])->where(['state'=>Forums::STATE_ACTIVE])->inverseOf('section');
     }
 
     public function getCanEdit() {
@@ -59,6 +65,16 @@ class Sections extends \yii\db\ActiveRecord
             return false;
         }
         elseif (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getCanDelete() {
+        if (Yii::$app->user->isGuest) {
+            return false;
+        }
+        elseif (Yii::$app->user->can('admin')) {
             return true;
         }
         return false;

@@ -19,4 +19,12 @@ return [
 	'Reply'=>'Ответить',
 	'Type your message here'=>'Напишите сообщение',
 	'Send message'=>'Отправить сообщение',
+	'Edit section'=>'Редактировать раздел',
+	'Delete section'=>'Удалить раздел',
+	'Hide section'=>'Скрыть раздел',
+	'Activate section'=>'Активировать раздел',
+	'Edit forum'=>'Редактировать форум',
+	'Delete forum'=>'Удалить форум',
+	'Hide forum'=>'Скрыть форум',
+	'Activate forum'=>'Активировать форум',
 ];

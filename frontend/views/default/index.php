@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		
 		<?php foreach ($sections as $section): ?>
 		
-			<h2 class="uk-accordion-title"><?=$section->name?></h2>
+			<h2 class="uk-accordion-title"><?php if ($section->state == $section::STATE_HIDDEN): ?><em>HIDDEN:</em> <?php endif ?><?=$section->name?></h2>
 
 			<div class="forum-section-forums uk-accordion-content uk-active">
 				<?php foreach ($section->forums as $forum): ?>
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					<div class="uk-grid item uk-grid-small uk-grid-match" data-uk-grid-margin>
 	                    <div class="uk-width-1-1 uk-width-medium-3-5">
 	                        <div class="uk-panel">
-	                        	<h3><?= Html::a($forum->name, $forum->url); ?></h3> 
+	                        	<h3><?php if ($forum->state == $forum::STATE_HIDDEN): ?><em>HIDDEN:</em> <?php endif ?><?= Html::a($forum->name, $forum->url); ?></h3> 
 	                        	<p><?=$forum->description?></p>
 	                        </div>
 	                    </div>
@@ -46,9 +46,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
 				<?php if ($section->canEdit): ?>
 
-					<hr>
-					
-		        	<?= Html::a(Yii::t('app','Редактировать раздел'), ['/forum/default/section-create','lang'=>$lang,'id'=>$section->id]); ?>
+					<?= Nav::widget([
+			            'options'=>['class'=>'uk-subnav-line uk-margin-top post-header'],
+			            'navClass'=>'uk-subnav',
+            			'encodeLabels'=>false,
+			            'items' => [ 
+			                ['label' =>Yii::t('forum','Edit section'),'url' =>['/forum/default/section-create','lang'=>$lang,'id'=>$section->id]], 
+			                ['label' =>Yii::t('forum','Activate section'),'url' =>['/forum/default/section-activate','lang'=>$lang,'id'=>$section->id],'linkOptions'=>['data'=>['method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]],'visible'=>$section->state == $section::STATE_HIDDEN],
+			                ['label' =>Yii::t('forum','Delete section'),'url' =>['/forum/default/section-delete','lang'=>$lang,'id'=>$section->id],'linkOptions'=>['data'=>['method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]],'visible'=>$section->state == $section::STATE_HIDDEN],
+			                ['label' =>Yii::t('forum','Hide section'),'url' =>['/forum/default/section-delete','lang'=>$lang,'id'=>$section->id],'linkOptions'=>['data'=>['method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]],'visible'=>$section->state == $section::STATE_ACTIVE],
+			            ],
+			        ]); ?> 
 		                        		
 		        <?php endif ?>
 
@@ -58,9 +66,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	</div>
 
-	<?php if ($forum->canEdit): ?>
+	<?php if ($section->canEdit): ?>
     
-        <?= Html::a(Yii::t('forum','Создать раздел'), 
+        <?= Html::a(Yii::t('forum','Create section'), 
             ['/forum/default/section-create','lang'=>$lang], 
             ['class' => 'uk-button uk-button-small uk-button-success']); ?>
 

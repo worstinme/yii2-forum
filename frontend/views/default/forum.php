@@ -25,9 +25,13 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Nav::widget([
             'options'=>['class'=>'uk-subnav-line uk-margin-top post-header'],
             'navClass'=>'uk-subnav',
+            'encodeLabels'=>false,
             'items' => [ 
-                ['label' =>Yii::t('forum','Редактировать форум'),'url' =>['/forum/default/forum-create','lang'=>$lang,'id'=>$forum->id]],
-                ['label' =>Yii::t('forum','Скрыть форум'),'url' =>['/forum/default/forum-delete','lang'=>$lang,'id'=>$forum->id]],
+                ['label' =>Yii::t('forum','Edit forum'),'url' =>['/forum/default/forum-create','lang'=>$lang,'id'=>$forum->id]],
+                ['label' =>Yii::t('forum','Activate forum'),'linkOptions'=>['data'=>['method'=>'post']],'url' =>['/forum/default/forum-activate','lang'=>$lang,'id'=>$forum->id],'visible'=>$forum->state == $forum::STATE_HIDDEN],
+                ['label' =>Yii::t('forum','Hide forum'),'linkOptions'=>['data'=>['method'=>'post']],'url' =>['/forum/default/forum-delete','lang'=>$lang,'id'=>$forum->id],'visible'=>$forum->state == $forum::STATE_ACTIVE],
+                ['label' =>Yii::t('forum','Delete forum'),'linkOptions'=>['data'=>['method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]],'url' =>['/forum/default/forum-delete','lang'=>$lang,'id'=>$forum->id],'visible'=>$forum->state == $forum::STATE_HIDDEN],
+                
             ],
         ]); ?> 
 
