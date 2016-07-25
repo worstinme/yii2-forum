@@ -87,7 +87,7 @@ class Threads extends \yii\db\ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(Yii::$app->controller->module->profileModel::className(), ['id' => 'user_id']);
+        return $this->hasOne(Yii::$app->controller->module->profileModel, ['id' => 'user_id']);
     }
 
     public function getPosts()
