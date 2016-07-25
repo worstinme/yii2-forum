@@ -112,3 +112,20 @@
 	background: #fff;
 	box-shadow: 0 0 1px rgba(0,0,0,.2);
 }
+
+.thread-info .author-avatar img {
+	height: 40px;
+	width: auto;
+	display: inline-block;
+}
+
+.thread-post .small-avatar img{
+	height: 20px;
+	width: auto;
+	display: inline-block;
+	margin-top: -3px;
+}
+
+.thread-post .small-avatar {
+	height: 15px;
+}

@@ -10,7 +10,7 @@ use worstinme\uikit\Nav;
 	'options'=>['class'=>'uk-subnav-line post-header'],
 	'navClass'=>'uk-subnav',
 	'items' => [ 
-		['label'=>!empty($model->user->avatar) ? Html::img($model->user->avatar,['class'=>'small-avatar']) : Html::tag('i','',['class'=>'uk-icon-user small-avatar']) ], 
+		['label'=>!empty($model->user->avatar) ? Html::img($model->user->avatar) : Html::tag('i','',['class'=>'uk-icon-user']),'options'=>['class'=>'small-avatar'] ], 
 		['label'=>!empty($model->user->name)?$model->user->name:Yii::t('forum','Deleted user'),'url'=>!empty($model->user->url)?$model->user->url:'#','linkOptions'=>['class'=>'author','data'=>['pjax'=>0]]],
 		['label'=>Yii::$app->formatter->asRelativeTime($model->created_at)],
 	    ['label' =>Yii::t('forum','Edit post'),'url' => $model->editUrl,'visible'=>$model->canEdit,'linkOptions'=>['data'=>['pjax'=>0]]],
