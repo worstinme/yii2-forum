@@ -107,7 +107,7 @@ class Threads extends \yii\db\ActiveRecord
         elseif (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
             return true;
         }
-        elseif($this->state != $this::STATE_DELETED && Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_EDIT) >= time()) {
+        elseif($this->state != $this::STATE_DELETED && Yii::$app->user->identity->id == $this->user_id && ($this->created_at + Yii::$app->controller->module->threadEditDelay) >= time()) {
             return true;
         }
         return false;
@@ -120,7 +120,7 @@ class Threads extends \yii\db\ActiveRecord
         elseif (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
             return true;
         }
-        elseif($this->state != $this::STATE_DELETED && Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_DELETE) >= time()) {
+        elseif($this->state != $this::STATE_DELETED && Yii::$app->user->identity->id == $this->user_id && ($this->created_at + Yii::$app->controller->module->threadDeleteDelay) >= time()) {
             return true;
         }
         return false;

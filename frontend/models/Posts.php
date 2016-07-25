@@ -21,8 +21,6 @@ class Posts extends \yii\db\ActiveRecord
     const STATE_ACTIVE = 1;
     const STATE_HIDDEN = 0;
 
-    const DELAY_TO_EDIT = 60*5;
-
     /**
      * @inheritdoc
      */
@@ -98,7 +96,7 @@ class Posts extends \yii\db\ActiveRecord
         elseif (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
             return true;
         }
-        elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_EDIT) >= time()) {
+        elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + Yii::$app->controller->module->postEditDelay) >= time()) {
             return true;
         }
         return false;
@@ -111,7 +109,7 @@ class Posts extends \yii\db\ActiveRecord
         elseif (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
             return true;
         }
-        elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + $this::DELAY_TO_DELETE) >= time()) {
+        elseif(Yii::$app->user->identity->id == $this->user_id && ($this->created_at + Yii::$app->controller->module->postDeleteDelay) >= time()) {
             return true;
         }
         return false;

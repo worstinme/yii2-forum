@@ -13,6 +13,12 @@ class Module extends \yii\base\Module
     public $profileModel = '\app\models\Profile';
     public $moderRole = 'admin';
     public $profileModelUserColumn = 'id';
+
+    public $postEditDelay = 60*5;
+    public $postDeleteDelay = 60*5;
+    public $threadEditDelay = 60*5;
+    public $threadDeleteDelay = 60*5;
+    
     /**
      * @inheritdoc
      */
