@@ -112,7 +112,7 @@ class ThreadsController extends Controller
 
                         if ($post->load(Yii::$app->request->post()) && $post->save()) {
                             $thread->updateAttributes(['posted_at'=>$post->created_at]);
-                            Yii::$app->session->setFlash('success',Yii::t('forum','Your message was submitted.'));
+                            Yii::$app->session->setFlash('comment',Yii::t('forum','Your message was submitted.'));
                             $post = new Posts(['thread_id'=>$thread->id]);
                         }
 

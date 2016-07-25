@@ -5,7 +5,7 @@ use worstinme\uikit\ActiveForm;
 
 ?>
 
-<?= worstinme\uikit\Alert::widget() ?>
+<?= worstinme\uikit\Alert::widget(['type'=>'comment']) ?>
 
 <div class="thread-reply">
     <?php $form = ActiveForm::begin(['layout'=>'stacked','field_width'=>'large','options'=>['data'=>['pjax'=>true]]]); ?>

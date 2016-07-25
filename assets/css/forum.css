@@ -2,11 +2,14 @@
 	display: none;
 }
 .forum-sections .uk-accordion-title  {
-	background: #fff;
 	box-shadow: 0 0 1px rgba(0,0,0,0.2);
+	margin-bottom: 0;
 }
 .forum-sections .forum-section-forums {
-
+	padding:15px;
+	margin-bottom: 15px;
+	box-shadow: 0 0 1px rgba(0,0,0,0.2);
+	background: #fff;
 }
 .forum-panel {
 	background: #fff;

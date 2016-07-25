@@ -28,4 +28,5 @@ return [
 	'Hide forum'=>'Скрыть форум',
 	'Create forum'=>'Создать форум',
 	'Activate forum'=>'Активировать форум',
+	'Your message was submitted.'=>'Ваше сообщение добавлено',
 ];

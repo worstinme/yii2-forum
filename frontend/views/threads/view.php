@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						['label' =>Yii::t('forum','Reply'),'url' => '#reply','linkOptions'=>['data-uk-smooth-scroll'=>""]],
 					    ['label' =>Yii::t('forum','Edit thread'),'url' => $thread->editUrl,'visible'=>$thread->canEdit,'linkOptions'=>['data'=>['pjax'=>0]]],
 					    ['label' =>Yii::t('forum','Delete thread'),'url' => $thread->deleteUrl,'visible'=>$thread->canDelete,'linkOptions'=>['encode'=>false,'data'=>['pjax'=>0,'method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]]],
-					    ['label' =>Yii::t('forum',$thread->flag?'Unlock thread':'Lock thread'),'url' => $thread->lockUrl,'visible'=>$thread->canEdit,'linkOptions'=>['data'=>['pjax'=>0]]],
+					    ['label' =>Yii::t('forum',$thread->flag?'Unlock thread':'Lock thread'),'url' => $thread->lockUrl,'visible'=>$thread->canEdit,'linkOptions'=>['data'=>['pjax'=>0,'method'=>'post']]],
 					],
 				]); ?>
 			</div>
