@@ -137,7 +137,7 @@ class Threads extends \yii\db\ActiveRecord
     }
 
     public function getLastPage($perPage) {
-        $perPage = $perPage??Yii::$app->controller->module->postPageSize;
+        $perPage = !empty($perPage)?$perPage:Yii::$app->controller->module->postPageSize;
         return ceil($this->getPosts()->count() / $perPage) - 1;
     }
 

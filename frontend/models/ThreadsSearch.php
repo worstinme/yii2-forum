@@ -42,7 +42,7 @@ class ThreadsSearch extends Threads
      */
     public function search($params)
     {
-        $query = $this->_query??Threads::find()->with(['forum','forum.section','lastPost']);
+        $query = $this->_query !== null?$this->_query:Threads::find()->with(['forum','forum.section','lastPost']);
 
         if (Yii::$app->user->isGuest || !Yii::$app->user->can(Yii::$app->controller->module->moderRole)) {
             $query->where(['forum_threads.state'=>Threads::STATE_ACTIVE]);
