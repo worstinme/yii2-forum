@@ -23,10 +23,10 @@ class Sections extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'alias'], 'required'],
+            [['name', 'alias','lang'], 'required'],
             [['description', 'metaDescription'], 'string'],
             [['state', 'sort'], 'integer'],
-            [['name', 'alias', 'metaTitle', 'metaKeywords'], 'string', 'max' => 255],
+            [['name', 'alias', 'metaTitle', 'metaKeywords','lang'], 'string', 'max' => 255],
         ];
     }
 
