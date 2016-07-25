@@ -12,6 +12,7 @@ class Module extends \yii\base\Module
     public $postPageSize = 5;
     public $profileModel = '\app\models\Profile';
     public $moderRole = 'admin';
+    public $profileModelUserColumn = 'id';
     /**
      * @inheritdoc
      */
