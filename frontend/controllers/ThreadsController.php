@@ -23,16 +23,12 @@ class ThreadsController extends Controller
 
         $lang = substr(Yii::$app->request->get('lang'), 0, 2);
 
-        if ($lang !== null) {
-
-            if (in_array($lang, array_keys($this->module->languages))) {
-                $this->lang = $lang;
-                Yii::$app->language = $lang;
-            }
-
+        if ($lang !== null && in_array($lang, array_keys($this->module->languages))) {
+            $this->lang = $lang;
+            Yii::$app->language = $lang;
         }
         else {
-             $this->lang = substr(Yii::$app->language, 0, 2);
+            $this->lang = substr(Yii::$app->language, 0, 2);
         }
 
         if (in_array($action->id, ['view'])) {

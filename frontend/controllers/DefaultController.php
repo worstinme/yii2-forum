@@ -49,18 +49,13 @@ class DefaultController extends Controller
 
         $lang = substr(Yii::$app->request->get('lang'), 0, 2);
 
-        if ($lang !== null) {
-
-            if (in_array($lang, array_keys($this->module->languages))) {
-                $this->lang = $lang;
-                Yii::$app->language = $lang;
-            }
-
+        if ($lang !== null && in_array($lang, array_keys($this->module->languages))) {
+            $this->lang = $lang;
+            Yii::$app->language = $lang;
         }
         else {
-             $this->lang = substr(Yii::$app->language, 0, 2);
+            $this->lang = substr(Yii::$app->language, 0, 2);
         }
-
 
         if (in_array($action->id, ['index','forum'])) {
             \yii\helpers\Url::remember();
@@ -81,6 +76,8 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
+        
+
         if (!Yii::$app->user->isGuest && (Yii::$app->user->can('admin') || Yii::$app->user->can('moder'))) {
             $sections = Sections::find()->where(['lang'=>$this->lang])->all();
         }
