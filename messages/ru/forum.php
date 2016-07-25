@@ -26,5 +26,6 @@ return [
 	'Edit forum'=>'Редактировать форум',
 	'Delete forum'=>'Удалить форум',
 	'Hide forum'=>'Скрыть форум',
+	'Create forum'=>'Создать форум',
 	'Activate forum'=>'Активировать форум',
 ];
