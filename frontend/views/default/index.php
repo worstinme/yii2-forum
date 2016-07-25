@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	</div>
 
-	<?php if ($section->canEdit): ?>
+	<?php if (!Yii::$app->user->isGuest && (Yii::$app->user->can('admin') || Yii::$app->user->can('moder'))): ?>
     
         <?= Html::a(Yii::t('forum','Create section'), 
             ['/forum/default/section-create','lang'=>$lang], 
