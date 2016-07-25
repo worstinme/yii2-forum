@@ -9,16 +9,17 @@ use Yii;
 class Module extends \yii\base\Module
 {
     public $languages = ['en'=>'English'];
-    public $postPageSize = 5;
-    public $profileModel = '\app\models\Profile';
+    public $postPageSize = 20;
     public $moderRole = 'admin';
+    
+    public $profileModel = '\app\models\Profile';
     public $profileModelUserColumn = 'id';
 
     public $postEditDelay = 60*5;
     public $postDeleteDelay = 60*5;
     public $threadEditDelay = 60*5;
     public $threadDeleteDelay = 60*5;
-    
+
     /**
      * @inheritdoc
      */

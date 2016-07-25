@@ -70,12 +70,12 @@ class ThreadsController extends Controller
         return [
             'upload-image' => [
                 'class' => 'worstinme\forum\helpers\UploadAction',
-                'folder'=>Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->identity->id),
+                'folder'=>Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->isGuest?'_':Yii::$app->user->identity->id),
                 'webroot'=>Yii::getAlias('@webroot'),
             ],
             'file-browser' => [
                 'class' => 'worstinme\jodit\BrowserAction',
-                'folder'=>Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->identity->id),
+                'folder'=>Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->isGuest?'_':Yii::$app->user->identity->id),
                 'webroot'=>Yii::getAlias('@webroot'),
             ],
         ];
