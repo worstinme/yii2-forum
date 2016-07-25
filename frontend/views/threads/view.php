@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				<?=!empty($thread->user->avatar) ? Html::img($thread->user->avatar,['class'=>'small-avatar']) : Html::tag('i','',['class'=>'uk-icon-user small-avatar'])?>
 			</div>
 			<div class="thread-description">
-				<?=Yii::t('forum','Author')?> <?= Html::a($thread->user->name, $thread->user->url, ['data'=>['pjax'=>0]]); ?>,
+				<?=Yii::t('forum','Author')?> <?= Html::a(!empty($thread->user->name)?$thread->user->name:Yii::t('forum','Deleted user'), !empty($thread->user->url)?$thread->user->url:'#', ['data'=>['pjax'=>0]]); ?>,
 				<?=Yii::t('forum','Published')?> <?= Yii::$app->formatter->asRelativeTime($thread->created_at) ?>
 			
 				<?= Nav::widget([

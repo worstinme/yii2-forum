@@ -11,7 +11,7 @@ $postCount = $model->getPosts()->count();
 		<div class="uk-width-medium-2-3">
 			<h2><?php if ($model->flag): ?><i class="uk-icon-star"></i> <?php endif ?><?=$model->state==$model::STATE_DELETED?'<em>DELETED: </em>':''?><?= Html::a($model->name, $model->url,['data'=>['pjax'=>0]]); ?></h2>
 			<p class="meta">
-				<?=Yii::t('forum','Author')?> <?= Html::a($model->user->name, $model->user->url,['data'=>['pjax'=>0]]); ?>,
+				<?=Yii::t('forum','Author')?> <?= Html::a(!empty($model->user->name)?$model->user->name:Yii::t('forum','Deleted user'), !empty($model->user->url)?$model->user->url:'#',['data'=>['pjax'=>0]]); ?>,
 				<?=Yii::t('forum','Published')?> <?= Yii::$app->formatter->asRelativeTime($model->created_at) ?>
 			</p>
 		</div>
@@ -27,7 +27,7 @@ $postCount = $model->getPosts()->count();
 		</div>
 		<div class="uk-width-medium-1-6">
 			<?php if ($model->lastPost !== null): ?>
-				<?= Html::a($model->lastPost->user->name,$model->lastPost->user->url,['data'=>['pjax'=>0]]); ?><br>
+				<?= Html::a(!empty($model->lastPost->user->name)?$model->lastPost->user->name:Yii::t('forum','Deleted user'),!empty($model->lastPost->user->url)?$model->lastPost->user->url:'#',['data'=>['pjax'=>0]]); ?><br>
 				<?=Yii::$app->formatter->asRelativeTime($model->lastPost->created_at)?>
 				<?= Html::a(null, $model->getUrl(['#'=>'post-'.$model->lastPost->id]),['class'=>'uk-icon-angle-double-right','data'=>['pjax'=>0]]); ?>
 			<?php else: ?>
