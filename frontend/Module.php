@@ -32,6 +32,7 @@ class Module extends \yii\base\Module
     {
         Yii::$app->i18n->translations['forum'] = [
             'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-GB',
             'basePath' => '@worstinme/forum/messages',
         ];
     }
