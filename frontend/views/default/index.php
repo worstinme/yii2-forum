@@ -52,6 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             			'encodeLabels'=>false,
 			            'items' => [ 
 			                ['label' =>Yii::t('forum','Edit section'),'url' =>['/forum/default/section-create','lang'=>$lang,'id'=>$section->id]], 
+			                ['label' =>Yii::t('forum','Create forum'),'url' =>['/forum/default/forum-create','section_id'=>$section->id,'lang'=>$lang]], 
 			                ['label' =>Yii::t('forum','Activate section'),'url' =>['/forum/default/section-activate','lang'=>$lang,'id'=>$section->id],'linkOptions'=>['data'=>['method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]],'visible'=>$section->state == $section::STATE_HIDDEN],
 			                ['label' =>Yii::t('forum','Delete section'),'url' =>['/forum/default/section-delete','lang'=>$lang,'id'=>$section->id],'linkOptions'=>['data'=>['method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]],'visible'=>$section->state == $section::STATE_HIDDEN],
 			                ['label' =>Yii::t('forum','Hide section'),'url' =>['/forum/default/section-delete','lang'=>$lang,'id'=>$section->id],'linkOptions'=>['data'=>['method'=>'post','confirm'=>Yii::t('forum','Sure to delete?')]],'visible'=>$section->state == $section::STATE_ACTIVE],

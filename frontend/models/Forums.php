@@ -22,10 +22,10 @@ class Forums extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['section_id', 'name', 'alias'], 'required'],
+            [['section_id', 'name', 'alias','lang'], 'required'],
             [['section_id', 'state', 'sort'], 'integer'],
             [['description', 'metaDescription'], 'string'],
-            [['name', 'alias', 'metaTitle', 'metaKeywords'], 'string', 'max' => 255],
+            [['name', 'alias', 'metaTitle', 'metaKeywords','lang'], 'string', 'max' => 255],
         ];
     }
 
