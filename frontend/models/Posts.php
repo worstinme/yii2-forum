@@ -70,8 +70,7 @@ class Posts extends \yii\db\ActiveRecord
 
     public function getUser()
     {
-        $profile = Yii::$app->controller->module->profileModel;
-        return $this->hasOne($profile, ['id' => 'user_id']);
+        return $this->hasOne(Yii::$app->controller->module->profileModel, ['id' => 'user_id']);
     }
 
     public function getThread()
