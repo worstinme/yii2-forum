@@ -27,20 +27,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'height'=>'250px',
                 'enableDragAndDropFileToEditor'=>new \yii\web\JsExpression("true"),
                 'uploader'=>[
-                    'url'=>\yii\helpers\Url::to(['upload-image','lang'=>Yii::$app->language]),
+                    'url'=>\yii\helpers\Url::to(['upload-image','lang'=>$this->context->lang]),
                     'data'=> [
                         '_csrf'=> Yii::$app->request->csrfToken,
                     ],
                 ],
                'filebrowser'=>[
                     'ajax'=>[
-                        'url'=>\yii\helpers\Url::to(['file-browser','lang'=>Yii::$app->language]),
+                        'url'=>\yii\helpers\Url::to(['file-browser','lang'=>$this->context->lang]),
                         'data'=> [
                             '_csrf'=> Yii::$app->request->csrfToken,
                         ],
                     ],
                     'uploader' => [
-                        'url'=>\yii\helpers\Url::to(['upload-image','lang'=>Yii::$app->language]),
+                        'url'=>\yii\helpers\Url::to(['upload-image','lang'=>$this->context->lang]),
                         'data'=> [
                             '_csrf'=> Yii::$app->request->csrfToken,
                         ],

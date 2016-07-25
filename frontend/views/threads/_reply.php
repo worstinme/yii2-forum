@@ -15,7 +15,7 @@ use worstinme\uikit\ActiveForm;
             'height'=>'120px',
             'enableDragAndDropFileToEditor'=>true,
             'uploader'=>[
-                'url'=>\yii\helpers\Url::to(['upload-image','lang'=>Yii::$app->language]),
+                'url'=>\yii\helpers\Url::to(['upload-image','lang'=>$this->context->lang]),
                 'data'=> [
                     '_csrf'=> Yii::$app->request->csrfToken,
                 ],
