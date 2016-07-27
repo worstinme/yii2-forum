@@ -132,3 +132,9 @@
 .thread-post .small-avatar {
 	height: 15px;
 }
+
+.forum-section-forums .forum+.forum {
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid #eee;
+}
