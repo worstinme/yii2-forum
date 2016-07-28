@@ -2,6 +2,7 @@
 forum extension for yii 2
 
 ВАЛЕРА, ЧТОБЫ ПОСТАВИТЬ ВЫПОЛНИ ЭТО!
+------------------------------------
 
 ```
 composer require --prefer-dist "worstinme/yii2-forum:dev-master"
