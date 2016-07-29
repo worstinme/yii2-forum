@@ -43,10 +43,10 @@ class ThreadsController extends Controller
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only'=>['edit','delete','reply','post-delete','lock','upload-image','file-browser'],
+                'only'=>['new-thread','edit','delete','reply','post-delete','lock','upload-image','file-browser'],
                 'rules' => [
                     [
-                        'actions' => ['edit','delete','post-delete','lock','upload-image','file-browser'],
+                        'actions' => ['new-thread','edit','delete','post-delete','lock','upload-image','file-browser'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
