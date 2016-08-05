@@ -20,6 +20,8 @@ class Module extends \yii\base\Module
     public $threadEditDelay = 60*5;
     public $threadDeleteDelay = 60*5;
 
+    public $profileAvatarAttribute = 'avatar';
+    
     /**
      * @inheritdoc
      */

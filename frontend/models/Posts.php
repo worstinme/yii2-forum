@@ -71,6 +71,10 @@ class Posts extends \yii\db\ActiveRecord
         return $this->hasOne(Yii::$app->controller->module->profileModel, [Yii::$app->controller->module->profileModelUserColumn => 'user_id']);
     }
 
+    public function getUserAvatar() {
+        return !empty($this->user) ? $this->user->{Yii::$app->controller->module->profileAvatarAttribute} : null;
+    }
+
     public function getThread()
     {
         return $this->hasOne(Threads::className(), ['id' => 'thread_id'])->inverseOf('posts');

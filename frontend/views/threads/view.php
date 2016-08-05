@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		<div class="thread-info">
 			<div class="author-avatar">
-				<?=!empty($thread->user->avatar) ? Html::img($thread->user->avatar,['class'=>'small-avatar']) : Html::tag('i','',['class'=>'uk-icon-user small-avatar'])?>
+				<?= $thread->userAvatar?Html::img($thread->userAvatar,['class'=>'small-avatar']):Html::tag('i','',['class'=>'uk-icon-user small-avatar'])?>
 			</div>
 			<div class="thread-description">
 				<?=Yii::t('forum','Author')?> <?= Html::a(!empty($thread->user->name)?$thread->user->name:Yii::t('forum','Deleted user'), !empty($thread->user->url)?$thread->user->url:'#', ['data'=>['pjax'=>0]]); ?>,

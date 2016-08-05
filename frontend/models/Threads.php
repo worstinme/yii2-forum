@@ -90,6 +90,10 @@ class Threads extends \yii\db\ActiveRecord
         return $this->hasOne(Yii::$app->controller->module->profileModel, [Yii::$app->controller->module->profileModelUserColumn => 'user_id']);
     }
 
+    public function getUserAvatar() {
+        return !empty($this->user) ? $this->user->{Yii::$app->controller->module->profileAvatarAttribute} : null;
+    }
+
     public function getPosts()
     {
         return $this->hasMany(Posts::className(), ['thread_id' => 'id'])->where(['state'=>Posts::STATE_ACTIVE])->orderBy('created_at')->inverseOf('thread');
