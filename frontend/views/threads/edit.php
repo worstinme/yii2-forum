@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?=$form->field($model, 'content')->widget(\worstinme\jodit\Editor::className(), [
             'settings' => [
-                'height'=>'250px',
                 'enableDragAndDropFileToEditor'=>new \yii\web\JsExpression("true"),
                 'uploader'=>[
                     'url'=>\yii\helpers\Url::to(['upload-image','lang'=>$this->context->lang]),
@@ -50,6 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ], 
                 'buttons'=>[
                     'bold', 'italic', 'underline', '|', 'ul', 'ol', '|', 'image', '|', 'hr', 
+                ],
+                'cleanHTML'=>[
+                    'cleanOnPaste'=>new \yii\web\JsExpression("true"),
                 ],
 
             ],

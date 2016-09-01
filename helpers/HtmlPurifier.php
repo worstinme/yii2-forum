@@ -10,7 +10,7 @@ class HtmlPurifier extends \yii\helpers\HtmlPurifier
 
 		return static::process($content,function ($config) {
 
-			$config->set('HTML.Allowed','p,b,strong,em,del,img[src|width|height|style],br,hr,u');
+			$config->set('HTML.Allowed','p,b,ul,ol,li,strong,em,del,img[src|width|height|style],br,hr,u');
 
 		});
 

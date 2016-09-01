@@ -79,10 +79,10 @@ class DefaultController extends Controller
         
 
         if (!Yii::$app->user->isGuest && (Yii::$app->user->can('admin') || Yii::$app->user->can('moder'))) {
-            $sections = Sections::find()->where(['lang'=>$this->lang])->all();
+            $sections = Sections::find()->where(['lang'=>$this->lang])->orderBy('sort')->all();
         }
         else {
-            $sections = Sections::find()->where(['lang'=>$this->lang,'state'=>Sections::STATE_ACTIVE])->all();
+            $sections = Sections::find()->where(['lang'=>$this->lang,'state'=>Sections::STATE_ACTIVE])->orderBy('sort')->all();
         }
         
 
