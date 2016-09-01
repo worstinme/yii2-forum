@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 $this->title = Html::encode($thread->name);
 
 
-$this->params['breadcrumbs'][] = ['label'=>Yii::t('forum','Форум'), 'url'=> ['/forum/default/index','lang'=>$lang]];
+$this->params['breadcrumbs'][] = ['label'=>Yii::t('forum', 'Forum'), 'url'=> ['/forum/default/index','lang'=>$lang]];
 //$this->params['breadcrumbs'][] = ['label'=>$section->name, 'url'=> $section->url];
 $this->params['breadcrumbs'][] = ['label'=>$forum->name, 'url'=> $forum->url];
 $this->params['breadcrumbs'][] = $this->title;

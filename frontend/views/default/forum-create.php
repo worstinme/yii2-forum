@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use worstinme\uikit\ActiveForm;
 
 $this->title = Yii::t('forum', 'Create Forum');
-$this->params['breadcrumbs'][] = ['label'=>Yii::t('forum','Форум'), 'url'=> ['/forum/default/index','lang'=>$lang]];
+$this->params['breadcrumbs'][] = ['label'=>Yii::t('forum', 'Forum'), 'url'=> ['/forum/default/index','lang'=>$lang]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="forums-create">

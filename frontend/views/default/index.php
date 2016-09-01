@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use worstinme\uikit\Nav;
 
-$this->title = Yii::t('forum','Форум');
+$this->title = Yii::t('forum', 'Forum');
 
 \worstinme\uikit\assets\Accordion::register($this);
 

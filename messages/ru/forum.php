@@ -1,6 +1,8 @@
 <?php
 
 return [
+	'Creating a new theme'=>'Создание новой темы',
+	'Forum'=>'Форум',
 	'Edit thread'=>'Редактировать тему',
 	'Update'=>'Обновить',
 	'Create'=>'Создать',
