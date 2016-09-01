@@ -46,14 +46,14 @@ class DefaultController extends Controller
         if (!parent::beforeAction($action)) {
             return false;
         }
+        
 
         $lang = substr(Yii::$app->request->get('lang'), 0, 2);
 
-        if ($lang !== null && in_array($lang, array_keys($this->module->languages))) {
+        if ($this->module->processLanguageSetting && $lang !== null && in_array($lang, array_keys($this->module->languages))) {
             $this->lang = $lang;
             Yii::$app->language = $lang;
-        }
-        else {
+        } else {
             $this->lang = substr(Yii::$app->language, 0, 2);
         }
 

@@ -3,8 +3,9 @@
 namespace worstinme\forum\frontend; 
 
 use Yii;
+
 /**
- * forum-backend module definition class
+ * forum-frontend module definition class
  */
 class Module extends \yii\base\Module
 {
@@ -21,6 +22,8 @@ class Module extends \yii\base\Module
     public $threadDeleteDelay = 60*5;
 
     public $profileAvatarAttribute = 'avatar';
+
+    public $processLanguageSetting = true;
     
     /**
      * @inheritdoc
