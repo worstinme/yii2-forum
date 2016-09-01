@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 use worstinme\uikit\ActiveForm;
 
-$this->title = Yii::t('forum','Создание новой темы');
+$this->title = Yii::t('forum', 'Creating a new theme');
 
 \worstinme\uikit\assets\Accordion::register($this);
 
 \worstinme\jodit\Asset::register($this);
 
-$this->params['breadcrumbs'][] = ['label'=>Yii::t('forum','Форум'), 'url'=> ['/forum/default/index','lang'=>$lang]];
+$this->params['breadcrumbs'][] = ['label'=>Yii::t('forum', 'Forum'), 'url'=> ['/forum/default/index','lang'=>$lang]];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>

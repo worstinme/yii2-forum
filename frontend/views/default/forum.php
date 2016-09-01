@@ -9,7 +9,7 @@ $this->title = $forum->title;
 
 \worstinme\uikit\assets\Accordion::register($this);
 
-$this->params['breadcrumbs'][] = ['label'=>Yii::t('forum','Форум'), 'url'=> ['/forum/default/index','lang'=>$lang]];
+$this->params['breadcrumbs'][] = ['label'=>Yii::t('forum', 'Forum'), 'url'=> ['/forum/default/index','lang'=>$lang]];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
