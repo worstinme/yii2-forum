@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'Creating a new theme'=>'Создание новой темы',
+    'Sign up to reply the thread'=>'Оставить сообщение',
 	'Forum'=>'Форум',
 	'Edit thread'=>'Редактировать тему',
 	'Update'=>'Обновить',
@@ -15,12 +15,17 @@ return [
 	'Delete post'=>'Удалить',
 	'Thread title'=>'Заголовок темы',
 	'Thread content'=>'Текст',
-	'Published'=>'опубликовано',
+    'Published'=>'Опубликовано',
+    'Updated'=>'Обновлено',
+    'published'=>'опубликовано',
+    'updated'=>'обновлено',
+    'Create new thread'=>'Создать новую тему',
 	'Lock thread'=>'Закрепить тему',
 	'Unlock thread'=>'Открепить тему',
 	'Reply'=>'Ответить',
 	'Type your message here'=>'Напишите сообщение',
 	'Send message'=>'Отправить сообщение',
+    'Create section'=>'Создать раздел',
 	'Edit section'=>'Редактировать раздел',
 	'Delete section'=>'Удалить раздел',
 	'Hide section'=>'Скрыть раздел',

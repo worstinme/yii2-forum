@@ -51,7 +51,7 @@ class ThreadsSearch extends Threads
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query->orderBy('flag DESC, posted_at DESC, updated_at DESC'),
+            'query' => $query->orderBy('flag DESC, updated_at DESC'),
         ]);
 
         $this->load($params);

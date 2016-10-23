@@ -12,6 +12,7 @@ $this->title = Yii::t('forum', 'Creating a new theme');
 $this->params['breadcrumbs'][] = ['label'=>Yii::t('forum', 'Forum'), 'url'=> ['/forum/default/index','lang'=>$lang]];
 $this->params['breadcrumbs'][] = $this->title;
 
+
 ?>
 
 <section class="forum">
@@ -22,7 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-        <?=$form->field($model, 'content')->widget(\worstinme\jodit\Editor::className(), [
+        <?php if(Yii::$app->controller->module->relatedModel): ?>
+
+            <?php $relation = Yii::$app->controller->module->relatedModel; ?>
+
+            <?= $form->field($model, 'related_id')->dropDownList($relation::forumRelationList(), ['prompt'=>Yii::t('forum','Select related item')]); ?>
+
+        <?php endif ?>
+
+        <?= $form->field($model, 'content')->widget(\worstinme\jodit\Editor::className(), [
             'settings' => [
                 'enableDragAndDropFileToEditor'=>new \yii\web\JsExpression("true"),
                 'uploader'=>[

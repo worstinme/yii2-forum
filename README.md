@@ -2,7 +2,7 @@
 forum extension for yii 2
 
 ------------------------------------
-
+ 
 ### Install
 
 ```

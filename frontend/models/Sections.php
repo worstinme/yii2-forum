@@ -55,9 +55,9 @@ class Sections extends \yii\db\ActiveRecord
     public function getForums()
     {
         if (Yii::$app->user->can('admin') || Yii::$app->user->can('moder')) {
-            return $this->hasMany(Forums::className(), ['section_id' => 'id'])->inverseOf('section');
+            return $this->hasMany(Forums::className(), ['section_id' => 'id'])->orderBy('sort')->inverseOf('section');
         }
-        return $this->hasMany(Forums::className(), ['section_id' => 'id'])->where(['state'=>Forums::STATE_ACTIVE])->inverseOf('section');
+        return $this->hasMany(Forums::className(), ['section_id' => 'id'])->where(['state'=>Forums::STATE_ACTIVE])->orderBy('sort')->inverseOf('section');
     }
 
     public function getCanEdit() {

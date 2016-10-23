@@ -35,7 +35,7 @@ class Threads extends \yii\db\ActiveRecord
         return [
             [['name','content'], 'required'],
             [['content'], 'string'],
-            [['views','flag','posted_at'],'integer'],
+            [['views','flag','related_id'],'integer'],
             [['content'],'filter','filter'=>'\worstinme\forum\helpers\HtmlPurifier::filter'],
             [['name'], 'string', 'max' => 255],
         ];
@@ -92,6 +92,13 @@ class Threads extends \yii\db\ActiveRecord
 
     public function getUserAvatar() {
         return !empty($this->user) ? $this->user->{Yii::$app->controller->module->profileAvatarAttribute} : null;
+    }
+
+
+    public function getRelatedItem() {
+        if(Yii::$app->controller->module->relatedModel !== null) {
+            return $this->hasOne(Yii::$app->controller->module->relatedModel,['id'=>'related_id']);
+        }
     }
 
     public function getPosts()
@@ -164,4 +171,5 @@ class Threads extends \yii\db\ActiveRecord
     public function getReplyUrl() {
         return ['/forum/threads/reply','thread_id'=>$this->id,'forum'=>$this->forum->alias,'section'=>$this->forum->section->alias,'lang'=>$this->forum->lang];
     }
+
 }

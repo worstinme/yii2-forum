@@ -4,6 +4,9 @@ use yii\helpers\Html;
 use worstinme\uikit\Nav;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
+use himiklab\thumbnail\EasyThumbnailImage;
+
+\worstinme\uikit\assets\Lightbox::register($this);
 
 $this->title = Html::encode($thread->name);
 
@@ -19,7 +22,20 @@ $this->params['breadcrumbs'][] = $this->title;
 	<article class="thread thread-view forum-panel">
 
 		<h1><?=$this->title?></h1>
-		<?=$thread->content?>
+
+		<div class="thread-content">
+			<?=$thread->content?>
+		</div>
+
+		<?php if($thread->relatedItem !== null): ?>
+		<div class="thread-related-info">
+			<h3>
+				<?= EasyThumbnailImage::thumbnailImg('@webroot'.$thread->relatedItem->image,40,40, EasyThumbnailImage::THUMBNAIL_OUTBOUND)?>
+				<?= Html::a($thread->relatedItem->name,$thread->relatedItem->url , ['title'=>$thread->relatedItem->name,'target'=>'_blank','data-pjax'=>0]); ?>
+			</h3>
+
+		</div>
+		<?php endif ?>
 
 		<div class="thread-info">
 			<div class="author-avatar">
@@ -27,8 +43,14 @@ $this->params['breadcrumbs'][] = $this->title;
 			</div>
 			<div class="thread-description">
 				<?=Yii::t('forum','Author')?> <?= Html::a(!empty($thread->user->name)?$thread->user->name:Yii::t('forum','Deleted user'), !empty($thread->user->url)?$thread->user->url:'#', ['data'=>['pjax'=>0]]); ?>,
-				<?=Yii::t('forum','Published')?> <?= Yii::$app->formatter->asRelativeTime($thread->created_at) ?>
-			
+				<?php if($thread->updated_at != $thread->created_at): ?>
+					<?=Yii::t('forum','updated')?>
+					<?= (time() - $thread->updated_at < 600000) ? Yii::$app->formatter->asRelativeTime($thread->updated_at) : Yii::$app->formatter->asDate($thread->updated_at,'php:d.m.Y') ?>,
+				<?php endif ?>
+				<?=Yii::t('forum','published')?>
+				<?= (time() - $thread->created_at < 600000) ? Yii::$app->formatter->asRelativeTime($thread->created_at) : Yii::$app->formatter->asDate($thread->created_at,'php:d.m.Y') ?>
+
+
 				<?= Nav::widget([
 					'options'=>['class'=>'uk-subnav-line'],
 					'navClass'=>'uk-subnav',
@@ -86,6 +108,13 @@ $.pjax.defaults.scrollTo = false;
 $("#reply").on("pjax:end",function(){ 
     $.pjax.reload({container: '#posts', timeout: 2000});
 ;})
+
+$("body").on("click",".thread-content img, .post-content img",function(){
+    var img_url = $(this).attr("src");
+    UIkit.lightbox.create([
+		{'source': img_url, 'type':'image'}
+	]).show();
+});
 
 	
 JS;

@@ -22,6 +22,9 @@
 	margin-bottom:10px;
 	font-weight: bold;
 }
+.forum-threads .empty {
+	margin-top:15px;
+}
 .forum-threads .thread h2 {
 	font-size: 14px;
 	font-weight: bold;
@@ -42,7 +45,7 @@
 	box-shadow: 0 0 1px rgba(0,0,0,0.2);
 	background: #fff;
 }
-.forum-threads .thread+.thread {
+.forum-threads .thread {
 	border-top:1px solid rgba(0,0,0,0.2)
 }
 .forum-threads .thread .meta {
@@ -58,6 +61,9 @@
 .post-content > *:last-child {
 	margin-bottom: 0;
 }
+.post-content img {
+	cursor: pointer;
+}
 .post-header {
 	margin:-15px -15px 10px -15px;
 	padding:7px 15px 7px  7px;
@@ -67,6 +73,9 @@
 	margin-top: 0;
 	font-size: 13px;
 	line-height: 15px;
+}
+.thread-content img {
+	cursor: pointer;
 }
 .thread-info {
 	margin:0 -15px -15px -15px;

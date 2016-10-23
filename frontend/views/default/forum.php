@@ -41,20 +41,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     </article>
 
-    <div class="uk-margin-top">
-
-        <?= Html::a(Yii::t('forum','Создать новую тему'), 
-            ['/forum/threads/new-thread','lang'=>$lang,'forum_id'=>$forum->id], 
-            ['class' => 'uk-button uk-button-small uk-button-success']); ?>
-
-
-    </div>
-
     <?php Pjax::begin(); ?>    
     	
     	<?= ListView::widget([
             'dataProvider' => $dataProvider,
-            'options'=>['class'=>'forum-threads uk-margin-top'],
+            'options'=>['class'=>'forum-threads'],
             'layout'=>'<div class="forum-threads-box">{items}</div><div class="uk-margin-top">{pager}</div>',
             'itemOptions' => ['class' => 'thread'],
             'itemView' => '_thread',
@@ -62,9 +53,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php Pjax::end(); ?>
 
-    <?= Html::a(Yii::t('forum','Создать новую тему'), 
-    	['/forum/threads/new-thread','lang'=>$lang,'forum_id'=>$forum->id], 
-    	['class' => 'uk-button uk-button-small uk-button-success']); ?>
+    <div class="uk-margin-top">
+
+        <?= Html::a(Yii::t('forum','Create new thread'),
+            ['/forum/threads/new-thread','lang'=>$lang,'forum_id'=>$forum->id],
+            ['class' => 'uk-button uk-button-small uk-button-success']); ?>
+
+
+    </div>
 
 </section>
 

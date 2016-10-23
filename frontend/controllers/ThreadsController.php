@@ -43,7 +43,7 @@ class ThreadsController extends Controller
         return [
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only'=>['new-thread','edit','delete','reply','post-delete','lock','upload-image','file-browser'],
+                'only'=>['new-thread','edit','delete','post-edit','post-delete','lock','upload-image','file-browser'],
                 'rules' => [
                     [
                         'actions' => ['new-thread','edit','delete','post-delete','lock','upload-image','file-browser'],
@@ -111,7 +111,6 @@ class ThreadsController extends Controller
                         ]);
 
                         if ($post->load(Yii::$app->request->post()) && $post->save()) {
-                            $thread->updateAttributes(['posted_at'=>$post->created_at]);
                             Yii::$app->session->setFlash('comment',Yii::t('forum','Your message was submitted.'));
                             $post = new Posts(['thread_id'=>$thread->id]);
                         }
@@ -264,6 +263,31 @@ class ThreadsController extends Controller
         Yii::$app->session->setFlash('error', Yii::t('forum',"Thread can't be deleted"));
         
         return $this->redirect($model->url);
+
+    }
+
+    public function actionReply($post_id)
+    {
+        if (($model = Posts::findOne($post_id)) === null || !$model->canEdit) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
+        $model->attachBehavior('ReplaceImagesBehavior', [
+            'class' => \worstinme\jodit\ReplaceImagesBehavior::className(),
+            'path' => Yii::getAlias('@webroot/images/forum/'.$model->thread->id),
+            'tempPath'=> Yii::getAlias('@webroot/uploads/tmp/'.Yii::$app->user->identity->id),
+            'filename_model_suffix'=>true,
+            'attribute'=> 'content',
+        ]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('comment',Yii::t('forum','Your post was updated.'));
+            return $this->redirect($model->thread->url);
+        }
+
+        return $this->render('post-edit', [
+            'model'=>$model
+        ]);
 
     }
 

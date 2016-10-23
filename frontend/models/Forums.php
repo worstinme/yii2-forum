@@ -60,7 +60,7 @@ class Forums extends \yii\db\ActiveRecord
 
     public function getLastThreads()
     {
-        return $this->hasMany(Threads::className(), ['forum_id' => 'id'])->where(['forum_threads.state'=>Threads::STATE_ACTIVE])->limit(3)->inverseOf('forum');
+        return $this->hasMany(Threads::className(), ['forum_id' => 'id'])->where(['forum_threads.state'=>Threads::STATE_ACTIVE])->orderBy('flag DESC, updated_at DESC')->limit(3)->inverseOf('forum');
     }
 
     public function getUrl() {

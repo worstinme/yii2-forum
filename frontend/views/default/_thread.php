@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
+use himiklab\thumbnail\EasyThumbnailImage;
 
 $postCount = $model->getPosts()->count();
 
@@ -9,10 +10,18 @@ $postCount = $model->getPosts()->count();
 <div class="thread-panel">
 	<div class="uk-grid uk-grid-small">
 		<div class="uk-width-medium-2-3">
+			<?php if($model->relatedItem !== null): ?>
+				<?= Html::a(EasyThumbnailImage::thumbnailImg('@webroot'.$model->relatedItem->image,40,40, EasyThumbnailImage::THUMBNAIL_OUTBOUND),$model->relatedItem->url , ['title'=>$model->relatedItem->name,'target'=>'_blank','class'=>'uk-float-right','data-pjax'=>0]); ?>
+			<?php endif ?>
 			<h2><?php if ($model->flag): ?><i class="uk-icon-star"></i> <?php endif ?><?=$model->state==$model::STATE_DELETED?'<em>DELETED: </em>':''?><?= Html::a($model->name, $model->url,['data'=>['pjax'=>0]]); ?></h2>
 			<p class="meta">
 				<?=Yii::t('forum','Author')?> <?= Html::a(!empty($model->user->name)?$model->user->name:Yii::t('forum','Deleted user'), !empty($model->user->url)?$model->user->url:'#',['data'=>['pjax'=>0]]); ?>,
-				<?=Yii::t('forum','Published')?> <?= Yii::$app->formatter->asRelativeTime($model->created_at) ?>
+				<?php if($model->updated_at != $model->created_at): ?>
+					<?=Yii::t('forum','updated')?>
+					<?= (time() - $model->updated_at < 600000) ? Yii::$app->formatter->asRelativeTime($model->updated_at) : Yii::$app->formatter->asDate($model->updated_at,'php:d.m.Y') ?>,
+				<?php endif ?>
+				<?=Yii::t('forum','published')?>
+				<?= (time() - $model->created_at < 600000) ? Yii::$app->formatter->asRelativeTime($model->created_at) : Yii::$app->formatter->asDate($model->created_at,'php:d.m.Y') ?>
 			</p>
 		</div>
 		<div class="uk-width-medium-1-6">
