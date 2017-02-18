@@ -1,6 +1,6 @@
 <?php
 
-namespace worstinme\forum\frontend; 
+namespace worstinme\forum\frontend;
 
 use Yii;
 
@@ -12,9 +12,9 @@ class Module extends \yii\base\Module
     public $languages = ['en'=>'English'];
     public $postPageSize = 20;
     public $moderRole = 'admin';
-    
+
     public $profileModel = '\app\models\Profile';
-    public $profileModelUserColumn = 'id';
+    public $profileModelUserColumn = 'user_id';
 
     public $relatedModel;
 
@@ -26,7 +26,7 @@ class Module extends \yii\base\Module
     public $profileAvatarAttribute = 'avatar';
 
     public $processLanguageSetting = true;
-    
+
     /**
      * @inheritdoc
      */

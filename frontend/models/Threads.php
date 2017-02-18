@@ -74,7 +74,7 @@ class Threads extends \yii\db\ActiveRecord
                 $this->user_id = Yii::$app->user->identity->id;
                 $this->state = $this::STATE_ACTIVE;
             }
-            
+
             return true;
         }
         else return false;
@@ -87,11 +87,13 @@ class Threads extends \yii\db\ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(Yii::$app->controller->module->profileModel, [Yii::$app->controller->module->profileModelUserColumn => 'user_id']);
+        $module = Yii::$app->getModule('forum');
+        return $this->hasOne($module->profileModel, [$module->profileModelUserColumn => 'user_id']);
     }
 
     public function getUserAvatar() {
-        return !empty($this->user) ? $this->user->{Yii::$app->controller->module->profileAvatarAttribute} : null;
+        $module = Yii::$app->getModule('forum');
+        return !empty($this->user) ? $this->user->{$module->profileAvatarAttribute} : null;
     }
 
 
